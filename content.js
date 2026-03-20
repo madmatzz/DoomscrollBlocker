@@ -512,7 +512,7 @@
     `;
     dlg.innerHTML = `
       <div style="font-family:'Tomorrow',sans-serif;font-size:18px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#4ade80;text-shadow:0 0 15px rgba(74,222,128,0.4);margin-bottom:16px;animation:shimmerBlurGreen 3.5s ease-in-out infinite;">I deserve some free time</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:22px;line-height:1.5;">The guard will sleep for this long.<br>Scroll freely, no interruptions.</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:22px;line-height:1.5;">The blocker will sleep for this long.<br>Scroll freely, no interruptions.</div>
       <div style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;color:rgba(74,222,128,0.45);">how long do you need?</div>
       <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
         ${[5, 10, 15, 30, 60].map(m => `<button class="doom-preset-btn" data-mins="${m}" style="padding:8px 14px;border:1px solid rgba(74,222,128,0.3);background:transparent;color:rgba(74,222,128,0.8);font-family:'Tomorrow',sans-serif;font-size:12px;cursor:pointer;border-radius:4px;transition:all 0.15s;" onmouseover="this.style.background='rgba(74,222,128,0.12)';this.style.borderColor='rgba(74,222,128,0.7)'" onmouseout="if(!this.classList.contains('selected-preset')){this.style.background='transparent';this.style.borderColor='rgba(74,222,128,0.3)'}">${m}m</button>`).join('')}

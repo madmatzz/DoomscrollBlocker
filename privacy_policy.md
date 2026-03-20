@@ -1,10 +1,10 @@
-# Privacy Policy — DoomScroll Guard
+# Privacy Policy — Doomscroll Blocker
 
 **Last updated:** March 2026
 
 ## Overview
 
-DoomScroll Guard ("the Extension") is a Chrome browser extension designed to help users become aware of and limit mindless scrolling and short-video consumption on social media sites. **The Extension does not collect, transmit, or share any personal data.**
+Doomscroll Blocker ("the Extension") is a Chrome browser extension designed to help users become aware of and limit mindless scrolling and short-video consumption on social media sites. **The Extension does not collect, transmit, or share any personal data.**
 
 ---
 

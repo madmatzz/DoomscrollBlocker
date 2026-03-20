@@ -49,7 +49,7 @@
         const pauseUntil = data.pauseUntil;
 
         if (!data.enabled) {
-          setStatus('disabled', 'Guard disabled'); hideTimer();
+          setStatus('disabled', 'Blocker disabled'); hideTimer();
         } else if (breakUntil && now < breakUntil) {
           // Break set from either popup — show time remaining
           const r = Math.ceil((breakUntil - now) / 60000);

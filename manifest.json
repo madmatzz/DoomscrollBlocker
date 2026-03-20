@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "DoomScroll Guard",
+  "name": "Doomscroll Blocker",
   "version": "1.0.0",
   "description": "Stop mindless scrolling. Set limits on Shorts and feeds, track your wasted pixels, and force yourself to take a break.",
   "permissions": [
@@ -30,7 +30,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "DoomScroll Guard",
+    "default_title": "Doomscroll Blocker",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
