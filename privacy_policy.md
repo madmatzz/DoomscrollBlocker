@@ -66,4 +66,4 @@ If the Extension's data practices change, this policy will be updated. Continued
 
 ## Contact
 
-For questions or concerns, open an issue on the extension's GitHub repository or contact the developer directly.
+For questions or concerns, open an issue on the extension's GitHub repository or contact the developer directly (hello@madmatz.xyz).
