@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DoomScroll Blocker</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --red: #ff2d2d;
+      --red-dim: rgba(255, 45, 45, 0.5);
+      --red-faint: rgba(255, 45, 45, 0.1);
+      --bg: #080808;
+      --bg2: #111;
+      --border: rgba(255, 45, 45, 0.2);
+      --text: #e8e0d8;
+      --muted: rgba(232, 224, 216, 0.45);
+      --mono: 'Tomorrow', sans-serif;
+      --serif: 'Tomorrow', sans-serif;
+    }
+
+    body {
+      width: 320px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--red-dim);
+    }
+
+    /* ── Header ── */
+    .header {
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      left: -20px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(255, 45, 45, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .logo-text {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 500;
+      font-style: normal;
+      color: var(--red);
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 20px rgba(255, 45, 45, 0.4);
+    }
+
+    .logo-sub {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* ── Toggle ── */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle-label {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .toggle {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .toggle input {
+      display: none;
+    }
+
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #222;
+      border: 1px solid rgba(255, 45, 45, 0.25);
+      border-radius: 10px;
+      transition: all 0.25s;
+    }
+
+    .toggle input:checked+.toggle-track {
+      background: rgba(255, 45, 45, 0.25);
+      border-color: var(--red);
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 12px;
+      height: 12px;
+      background: #555;
+      border-radius: 50%;
+      transition: all 0.25s;
+    }
+
+    .toggle input:checked~.toggle-thumb {
+      left: 19px;
+      background: var(--red);
+      box-shadow: 0 0 8px rgba(255, 45, 45, 0.5);
+    }
+
+    /* ── Status badge ── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: var(--red-faint);
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red-dim);
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .status-badge.active {
+      border-color: rgba(255, 45, 45, 0.5);
+      background: rgba(255, 45, 45, 0.1);
+      color: var(--red);
+    }
+
+    .status-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .status-badge.active .status-dot {
+      background: var(--red);
+      box-shadow: 0 0 6px var(--red);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.3;
+      }
+    }
+
+    /* ── Section ── */
+    .section {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Slider ── */
+    .slider-row {
+      margin-bottom: 12px;
+    }
+
+    .slider-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .slider-name {
+      font-size: 11px;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    .slider-val {
+      font-size: 10px;
+      color: var(--red);
+      font-weight: 500;
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      background: #222;
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 8px rgba(255, 45, 45, 0.4);
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 14px rgba(255, 45, 45, 0.7);
+    }
+
+    /* ── Break/Pause section ── */
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 9px 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      border-color: var(--red-dim);
+      color: var(--red);
+      background: var(--red-faint);
+    }
+
+    .action-btn.danger {
+      border-color: rgba(255, 45, 45, 0.35);
+      color: var(--red-dim);
+    }
+
+    .action-btn.danger:hover {
+      background: rgba(255, 45, 45, 0.15);
+      border-color: var(--red);
+      color: var(--red);
+    }
+
+    /* ── Break duration inputs ── */
+    .time-picker {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: rgba(255, 45, 45, 0.04);
+      margin-top: 4px;
+    }
+
+    .time-picker.open {
+      display: flex;
+    }
+
+    .time-presets {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .preset-pill {
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .preset-pill:hover,
+    .preset-pill.selected {
+      border-color: var(--red-dim);
+      color: var(--red);
+      background: var(--red-faint);
+    }
+
+    .custom-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .custom-input {
+      flex: 1;
+      padding: 7px 10px;
+      background: #111;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--red);
+      font-family: var(--mono);
+      font-size: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .custom-input:focus {
+      border-color: var(--red-dim);
+    }
+
+    .custom-input::placeholder {
+      color: #333;
+    }
+
+    .confirm-btn {
+      padding: 7px 14px;
+      background: rgba(255, 45, 45, 0.2);
+      border: 1px solid var(--red);
+      color: var(--red);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border-radius: 2px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .confirm-btn:hover {
+      background: rgba(255, 45, 45, 0.35);
+    }
+
+    /* ── Active timer banner ── */
+    .timer-active {
+      display: none;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 45, 45, 0.35);
+      background: rgba(255, 45, 45, 0.06);
+      border-radius: 2px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .timer-active.visible {
+      display: flex;
+    }
+
+    .timer-text {
+      font-size: 10px;
+      color: var(--red);
+      letter-spacing: 0.05em;
+    }
+
+    .timer-cancel {
+      font-size: 9px;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: underline;
+      transition: color 0.2s;
+    }
+
+    .timer-cancel:hover {
+      color: var(--red);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-size: 9px;
+      color: #333;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .reset-all {
+      font-size: 9px;
+      color: #333;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .reset-all:hover {
+      color: var(--red);
+    }
+
+    /* ── Session stats ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stat-box {
+      background: rgba(255, 45, 45, 0.04);
+      border: 1px solid rgba(255, 45, 45, 0.12);
+      border-radius: 5px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-label {
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 45, 45, 0.45);
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-value span {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+
+    .stat-bar-wrap {
+      margin-top: 5px;
+      height: 3px;
+      background: rgba(255, 45, 45, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      background: #ff2d2d;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      box-shadow: 0 0 6px rgba(255, 45, 45, 0.5);
+    }
+
+    .stat-bar-fill.safe {
+      background: #4ade80;
+      box-shadow: 0 0 6px rgba(74, 222, 128, 0.4);
+    }
+
+    .stat-bar-fill.warn {
+      background: #facc15;
+      box-shadow: 0 0 6px rgba(250, 204, 21, 0.4);
+    }
+
+
+
+    /* ── Intervention mode selector ── */
+    .mode-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .mode-row:hover {
+      border-color: var(--red-dim);
+      background: var(--red-faint);
+    }
+
+    .mode-row.selected {
+      border-color: rgba(255, 45, 45, 0.55);
+      background: rgba(255, 45, 45, 0.07);
+    }
+
+    .mode-radio {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 45, 45, 0.35);
+      flex-shrink: 0;
+      margin-top: 2px;
+      position: relative;
+      transition: border-color 0.18s;
+    }
+
+    .mode-row.selected .mode-radio {
+      border-color: var(--red);
+    }
+
+    .mode-row.selected .mode-radio::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--red);
+      box-shadow: 0 0 6px rgba(255, 45, 45, 0.5);
+    }
+
+    .mode-body {
+      flex: 1;
+    }
+
+    .mode-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mode-desc {
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+
+    .mode-badge {
+      font-size: 8px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid rgba(255, 45, 45, 0.35);
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+
+    /* ── Sites collapsible header ── */
+    .sites-toggle-header {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      margin-bottom: 0;
+    }
+
+    .sites-toggle-header:hover {
+      color: var(--red);
+    }
+
+    /* ── Site type toggle ── */
+    .type-toggle {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .type-btn {
+      padding: 5px 8px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .type-btn+.type-btn {
+      border-left: 1px solid var(--border);
+    }
+
+    .type-btn.selected {
+      background: rgba(255, 45, 45, 0.12);
+      color: var(--red);
+    }
+
+    .type-badge {
+      font-size: 8px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+
+    .type-badge.feed {
+      color: rgba(255, 45, 45, 0.6);
+      border: 1px solid rgba(255, 45, 45, 0.2);
+      background: rgba(255, 45, 45, 0.06);
+    }
+
+    .type-badge.shorts {
+      color: rgba(250, 204, 21, 0.7);
+      border: 1px solid rgba(250, 204, 21, 0.2);
+      background: rgba(250, 204, 21, 0.06);
+    }
+
+    /* ── Site row ── */
+    .site-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: rgba(255, 45, 45, 0.03);
+    }
+
+    .site-row-name {
+      flex: 1;
+      font-size: 11px;
+      color: var(--text);
+      letter-spacing: 0.03em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .site-row input {
+      flex: 1;
+      background: #111;
+      border: none;
+      outline: none;
+      color: var(--red);
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 0;
+    }
+
+    .site-row-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 10px;
+      font-family: var(--mono);
+      padding: 2px 5px;
+      border-radius: 2px;
+      transition: color 0.15s;
+      flex-shrink: 0;
+    }
+
+    .site-row-btn:hover {
+      color: var(--red);
+    }
+
+    .site-row-btn.save {
+      color: #4ade80;
+    }
+
+    .site-row-btn.save:hover {
+      color: #86efac;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-row">
+      <div>
+        <div class="logo-text">DoomScroll Blocker</div>
+        <div class="logo-sub">Scroll Awareness Extension</div>
+      </div>
+      <label class="toggle" title="Enable / Disable">
+        <input type="checkbox" id="enableToggle" checked />
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+    <div class="status-badge" id="statusBadge">
+      <div class="status-dot"></div>
+      <span id="statusText">Loading…</span>
+    </div>
+  </div>
+
+  <!-- Session stats -->
+  <div class="section">
+    <div class="section-title">This session</div>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-label">Pixels scrolled</div>
+        <div class="stat-value" id="statPx">—<span> px</span></div>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar-fill safe" id="statPxBar" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Shorts watched</div>
+        <div class="stat-value" id="statShorts">—<span> videos</span></div>
+        <div class="stat-bar-wrap">
+          <div class="stat-bar-fill safe" id="statShortsBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll sensitivity -->
+  <div class="section">
+    <div class="section-title">Sensitivity</div>
+
+    <div class="slider-row">
+      <div class="slider-top">
+        <span class="slider-name">Scroll distance trigger</span>
+        <span class="slider-val" id="threshVal">10,000 px</span>
+      </div>
+      <input type="range" id="threshSlider" min="500" max="20000" step="500" value="10000" />
+      <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;">Reddit, Instagram feed,
+        Facebook, LinkedIn…</div>
+    </div>
+
+    <div class="slider-row" style="margin-top:14px;">
+      <div class="slider-top">
+        <span class="slider-name">YouTube Shorts trigger</span>
+        <span class="slider-val" id="shortsVal">5 shorts</span>
+      </div>
+      <input type="range" id="shortsSlider" min="1" max="30" step="1" value="5" />
+      <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;">YouTube Shorts, TikTok,
+        Instagram Reels, X Videos — each swipe = 1</div>
+    </div>
+  </div>
+
+
+  <!-- Intervention mode -->
+  <div class="section">
+    <div class="section-title">Intervention mode</div>
+
+    <div class="mode-row" id="modeSoft">
+      <div class="mode-radio" id="modeSoftRadio"></div>
+      <div class="mode-body">
+        <div class="mode-label">Soft friction <span class="mode-badge">default</span></div>
+        <div class="mode-desc">Popup appears with a "Continue anyway" option.</div>
+      </div>
+    </div>
+
+    <div class="mode-row" id="modeStrict" style="margin-top:10px;">
+      <div class="mode-radio" id="modeStrictRadio"></div>
+      <div class="mode-body">
+        <div class="mode-label">Hard block</div>
+        <div class="mode-desc">Popup appears — no way to continue scrolling. Taking a break is your only escape.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Break / Pause -->
+  <div class="section">
+    <div class="section-title">Take a break</div>
+
+    <!-- Active timer display -->
+    <div class="timer-active" id="timerActive">
+      <span class="timer-text" id="timerText">Break active</span>
+      <button class="timer-cancel" id="timerCancel">Resume now</button>
+    </div>
+
+    <!-- Break button -->
+    <div class="btn-row" id="breakBtns">
+      <button class="action-btn danger" style="flex:1" id="breakBtn">☕ Set a break</button>
+    </div>
+
+    <!-- Break duration picker -->
+    <div class="time-picker" id="breakPicker">
+      <div class="time-presets" id="breakPresets">
+        <button class="preset-pill" data-mins="5">5m</button>
+        <button class="preset-pill selected" data-mins="10">10m</button>
+        <button class="preset-pill" data-mins="15">15m</button>
+        <button class="preset-pill" data-mins="30">30m</button>
+        <button class="preset-pill" data-mins="60">1h</button>
+        <button class="preset-pill" data-mins="0">Indefinite</button>
+      </div>
+      <div class="custom-row">
+        <input type="number" class="custom-input" id="breakCustom" placeholder="Custom mins…" min="1" max="480" />
+        <button class="confirm-btn" id="breakConfirm">Start Break</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monitored Sites -->
+  <div class="section" id="sitesSection">
+    <div class="section-title sites-toggle-header" id="sitesToggleHeader">
+      Monitored sites
+      <span id="sitesChevron" style="margin-left:auto;font-size:9px;opacity:0.5;transition:transform 0.2s;">▶</span>
+    </div>
+    <div id="sitesBody" style="display:none;margin-top:10px;">
+      <div id="sitesList" style="display:flex;flex-direction:column;gap:6px;margin-bottom:10px;"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <input type="text" id="siteInput" class="custom-input" placeholder="e.g. reddit.com"
+          style="width:100%;font-size:11px;padding:6px 10px;box-sizing:border-box;" />
+        <div style="display:flex;gap:6px;">
+          <div class="type-toggle" id="addTypeToggle" style="flex:1;">
+            <button class="type-btn selected" data-type="feed" style="flex:1;">Feed</button>
+            <button class="type-btn" data-type="shorts" style="flex:1;">Shorts</button>
+          </div>
+          <button class="confirm-btn" id="siteAddBtn" style="font-size:10px;padding:6px 14px;">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-text">v1.0 · Social media guard</span>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <span style="font-size:9px;color:#333;letter-spacing:0.08em;text-transform:uppercase;">All data stays local · No tracking</span>
+      <button class="reset-all" id="resetBtn">↺ Reset scroll</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>

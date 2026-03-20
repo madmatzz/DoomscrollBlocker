@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Tomorrow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@keyframes doomBackdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Dark overlay (blackout phase only) ─────────────────────────────────── */
+#doomscroll-overlay {
+  position: fixed; inset: 0;
+  z-index: 2147483640;
+  pointer-events: none;
+  background: black;
+  opacity: 0;
+}
+#doomscroll-overlay.active { pointer-events: all; }
+
+/* ── "doomscrolling" label (blackout phase) ─────────────────────────────── */
+#doomscroll-label {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  z-index: 2147483645;
+  font-family: 'Tomorrow', sans-serif;
+  font-size: clamp(2rem, 7vw, 5.5rem);
+  font-weight: 500; font-style: italic;
+  letter-spacing: -0.04em;
+  color: #ff2d2d;
+  text-shadow: 0 0 40px rgba(255,45,45,0.8), 0 0 80px rgba(255,45,45,0.4);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  text-transform: uppercase; user-select: none; white-space: nowrap;
+}
+#doomscroll-label.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+#doomscroll-label.pulse   { animation: doomPulse 2s ease-in-out infinite; }
+@keyframes doomPulse {
+  0%,100% { text-shadow: 0 0 40px rgba(255,45,45,0.8), 0 0 80px rgba(255,45,45,0.4); }
+  50%     { text-shadow: 0 0 70px rgba(255,45,45,1),   0 0 140px rgba(255,45,45,0.6); }
+}
+
+/* ── Scroll counter ─────────────────────────────────────────────────────── */
+#doomscroll-counter {
+  position: fixed; bottom: 22px; right: 22px;
+  z-index: 2147483647;
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,45,45,0.6);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#doomscroll-counter.visible { opacity: 0; } /* hidden on page; count still runs for popup */
+
+/* ── Action bar (blackout phase) ────────────────────────────────────────── */
+#doomscroll-action-bar {
+  position: fixed; bottom: 52px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483648;
+  display: flex; gap: 12px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.5s ease 0.2s;
+}
+#doomscroll-action-bar.visible { opacity: 1; pointer-events: all; }
+
+.doom-btn {
+  padding: 10px 22px;
+  border: 1.5px solid rgba(255,45,45,0.55);
+  background: rgba(0,0,0,0.88); color: #ff2d2d;
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 12px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  cursor: pointer; border-radius: 2px;
+  transition: all 0.2s ease; backdrop-filter: blur(10px);
+}
+.doom-btn:hover       { background: rgba(255,45,45,0.15); border-color: #ff2d2d; box-shadow: 0 0 18px rgba(255,45,45,0.3); }
+.doom-btn.primary     { background: rgba(255,45,45,0.18); border-color: #ff2d2d; }
+.doom-btn.primary:hover { background: rgba(255,45,45,0.32); }
+
+/* ── Break pill (top-right corner) ─────────────────────────────────────── */
+#doomscroll-paused-banner {
+  position: fixed; top: 14px; right: 16px;
+  z-index: 2147483647;
+  display: none; align-items: center; gap: 7px;
+  padding: 7px 12px 7px 10px;
+  background: rgba(8,8,8,0.85);
+  border: 1px solid rgba(255,45,45,0.25);
+  border-radius: 20px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,45,45,0.06);
+  pointer-events: none; opacity: 0;
+  transform: translateY(-6px) scale(0.95);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  cursor: grab;
+}
+#doomscroll-paused-banner.visible {
+  display: flex; opacity: 1; pointer-events: all;
+  transform: translateY(0) scale(1);
+}
+#doomscroll-paused-banner:hover {
+  border-color: rgba(255,45,45,0.5);
+  background: rgba(14,14,14,0.95);
+}
+#doomscroll-paused-icon { font-size: 13px; line-height: 1; flex-shrink: 0; }
+#doomscroll-paused-text {
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,45,45,0.9); white-space: nowrap;
+}
+#doomscroll-paused-timer {
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 12px; font-weight: 500;
+  color: #ff2d2d; letter-spacing: -0.01em;
+  white-space: nowrap; min-width: 32px; text-align: right;
+}
+#doomscroll-stop-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,45,45,0.35);
+  background: transparent;
+  color: rgba(255,45,45,0.6);
+  font-size: 8px; font-weight: 500;
+  cursor: pointer; flex-shrink: 0;
+  transition: all 0.15s ease;
+  font-family: 'Tomorrow', sans-serif;
+  padding: 0; margin-left: 2px;
+}
+#doomscroll-stop-btn:hover {
+  background: rgba(255,45,45,0.2); border-color: #ff2d2d; color: #ff2d2d;
+  transform: scale(1.15);
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   LOCKDOWN — full-page takeover
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Full-page dark backdrop — truly covers everything */
+#doomscroll-friction {
+  position: fixed !important; inset: 0 !important;
+  z-index: 2147483646 !important;
+  background: rgba(0,0,0,0.96) !important;
+  backdrop-filter: blur(8px) !important;
+  opacity: 0 !important; pointer-events: none !important;
+  transition: opacity 0.4s ease !important;
+  overflow: hidden !important;
+  transform: none !important;
+}
+#doomscroll-friction.visible {
+  opacity: 1 !important; pointer-events: all !important;
+}
+
+
+/* ── Big fly-in word ─────────────────────────────────────────────────────── */
+#doomscroll-word {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(4) translateY(-80px);
+  z-index: 2147483650;
+  font-family: 'Tomorrow', sans-serif;
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 500; font-style: italic;
+  letter-spacing: -0.04em; text-transform: uppercase;
+  color: #ff2d2d;
+  text-shadow: 0 0 60px rgba(255,45,45,1), 0 0 120px rgba(255,45,45,0.5);
+  white-space: nowrap; pointer-events: none; opacity: 0;
+}
+@keyframes wordFlyIn {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(4)  translateY(-80px); }
+  30%  { opacity: 1; transform: translate(-50%,-50%) scale(2.8) translateY(0); }
+  65%  { opacity: 1; transform: translate(-50%,-50%) scale(2.8) translateY(0); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(0.16) translateY(-210px); }
+}
+#doomscroll-word.animating {
+  animation: wordFlyIn 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+/* ── Card ───────────────────────────────────────────────────────────────── */
+/* Card is a <dialog> rendered in the browser TOP LAYER.
+   Top layer is above all normal DOM stacking — no transform/overflow/clip on any
+   ancestor (including Reddit's shreddit-app) can affect it. */
+#doomscroll-friction-card {
+  /* dialog is in the browser top layer — host page CSS cannot reach it.
+     No !important needed here; !important would block CSS animations from running
+     (author !important ranks above animation values in the cascade). */
+  border: 1px solid rgba(255,45,45,0.28);
+  padding: 24px 36px 28px;
+  margin: auto;              /* top-layer dialog auto-centers with margin:auto */
+  width: min(420px, 90vw);
+  max-width: 90vw;
+  box-sizing: border-box;
+  overflow: visible;
+  background: #0c0c0c;
+  border-radius: 8px;
+  box-shadow: 0 0 80px rgba(255,45,45,0.12), 0 40px 100px rgba(0,0,0,0.95);
+  text-align: center;
+  color: inherit;
+  /* Hidden until card-visible (no !important so animation can override) */
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  transform: scale(0.9) translateY(20px);
+  transition: none;
+}
+#doomscroll-friction-card.card-visible {
+  pointer-events: all;
+  animation: cardReveal 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes cardReveal {
+  0%   { opacity: 0; transform: scale(0.9) translateY(20px); }
+  100% { opacity: 1; transform: scale(1)   translateY(0); }
+}
+/* Transparent backdrop — frictionEl handles the dark overlay */
+#doomscroll-friction-card::backdrop {
+  background: transparent;
+}
+
+/* Reset ALL children inside the dialog — Reddit's global CSS (e.g. * { line-height:2 })
+   still applies to top-layer elements. Neutralize it to prevent button text being clipped. */
+#doomscroll-friction-card, #doomscroll-friction-card * {
+  box-sizing: border-box;
+  line-height: 1.2;
+}
+
+/* ── Card heading: "doomscrolling detected" ─────────────────────────────── */
+#doomscroll-card-word {
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 18px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: #ff2d2d;
+  text-shadow: 0 0 20px rgba(255,45,45,0.5);
+  margin-bottom: 16px;
+  opacity: 0; transform: translateY(5px);
+  transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+}
+
+@keyframes shimmerBlur {
+  0%   { text-shadow: 0 0 15px rgba(255,45,45,0.4); filter: blur(0px); }
+  50%  { text-shadow: 1.5px 0 18px rgba(255,45,45,0.7), -1.5px 0 18px rgba(255,45,45,0.7); filter: blur(0.4px); }
+  100% { text-shadow: 0 0 15px rgba(255,45,45,0.4); filter: blur(0px); }
+}
+
+@keyframes shimmerBlurGreen {
+  0%   { text-shadow: 0 0 15px rgba(74,222,128,0.4); filter: blur(0px); }
+  50%  { text-shadow: 1.5px 0 18px rgba(74,222,128,0.7), -1.5px 0 18px rgba(74,222,128,0.7); filter: blur(0.4px); }
+  100% { text-shadow: 0 0 15px rgba(74,222,128,0.4); filter: blur(0px); }
+}
+#doomscroll-friction-card.card-visible #doomscroll-card-word {
+  opacity: 1; transform: translateY(0);
+  animation: shimmerBlur 3.5s ease-in-out infinite;
+}
+
+/* ── Timer number ────────────────────────────────────────────────────────── */
+#doomscroll-ring-wrap {
+  margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+}
+#doomscroll-ring-number {
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 40px; font-weight: 500;
+  color: #ff2d2d; text-shadow: 0 0 24px rgba(255,45,45,0.6);
+  letter-spacing: -0.03em;
+}
+
+/* ── Sub text under ring ────────────────────────────────────────────────── */
+#doomscroll-friction-sub {
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 28px;
+  margin-top: 6px;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+#doomscroll-friction-btns {
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+/* Hold-to-continue button */
+#doomscroll-btn-continue {
+  --hold-pct: 0;
+  position: relative;
+  width: 100%; padding: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff2d2d;
+  border: none; border-radius: 5px;
+  color: #fff;
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 14px; font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  box-shadow: 0 0 30px rgba(255,45,45,0.35);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Dark fill drains left-to-right as user holds */
+#doomscroll-btn-continue::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  transform-origin: right center;
+  transform: scaleX(calc(1 - var(--hold-pct)));
+  transition: none;
+}
+
+/* Label sits above the fill layer */
+#doomscroll-btn-continue span {
+  position: relative; z-index: 1;
+}
+
+#doomscroll-btn-continue:hover {
+  box-shadow: 0 0 45px rgba(255,45,45,0.55);
+}
+
+#doomscroll-btn-continue.holding {
+  box-shadow: 0 0 60px rgba(255,45,45,0.75);
+}
+
+/* (break button removed) */
+
+/* ── Button hint ─────────────────────────────────────────────────────────── */
+#doomscroll-btn-hint {
+  font-family: 'Tomorrow', sans-serif;
+  font-size: 9px;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #999;
+  margin-top: 8px;
+  text-align: center;
+}
