@@ -31,6 +31,16 @@ To function, the Extension accesses the following information **locally in your 
 
 ---
 
+## What We Do
+
+- ✅ We **count** pixels you scroll on sites you choose to monitor (session only, in-memory)
+- ✅ We **count** short videos you watch on sites you choose to monitor (session only, in-memory)
+- ✅ We **save your settings** (thresholds, site list, break timers) locally via `chrome.storage.sync`
+- ✅ We **show you an interruption** when you hit your own self-set limits
+- ✅ We give you tools to **take a break** and resume on your own terms
+
+---
+
 ## Data Storage
 
 Your settings (scroll threshold, tracked site list, break timer state) are saved using Chrome's built-in `chrome.storage.sync` API. This stores data locally in your browser and, if you are signed into Chrome, syncs it across your own devices via your Google account. **We have no access to this data.**
