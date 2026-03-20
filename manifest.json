@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Doomscroll Blocker",
   "version": "1.0.0",
-  "description": "Stop mindless scrolling. Set limits on Shorts and feeds, track your wasted pixels, and force yourself to take a break.",
+  "description": "Limit mindless scrolling on social media feeds and short videos. Set scroll limits, get interrupted, and take intentional breaks.",
   "permissions": [
     "storage",
     "alarms",
