@@ -64,7 +64,21 @@
           setStatus('paused', 'On break — indefinite');
           showTimer('Break active — indefinite', resume);
         } else {
-          setStatus('active', 'Monitoring your scroll'); hideTimer();
+          // Probe the content script — if it responds, the page is being monitored
+          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (!tabs[0]) {
+              setStatus('inactive', 'Not active on this page'); hideTimer();
+              return;
+            }
+            chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_STATS' }, (resp) => {
+              if (chrome.runtime.lastError || !resp) {
+                setStatus('inactive', 'Not active on this page');
+              } else {
+                setStatus('active', 'Monitoring your scroll');
+              }
+              hideTimer();
+            });
+          });
         }
       }
     );
@@ -248,9 +262,17 @@
     { host: 'tiktok.com',    types: ['shorts']         },
     { host: 'x.com',         types: ['feed']           },
     { host: 'reddit.com',    types: ['feed']           },
-    { host: 'linkedin.com',  types: ['feed']           },
     { host: 'threads.net',   types: ['feed']           },
   ];
+
+  // Hosts that have static content_scripts in manifest.json (no permission request needed)
+  const DEFAULT_HOSTS = [
+    'youtube.com', 'facebook.com', 'instagram.com',
+    'tiktok.com', 'x.com', 'reddit.com', 'threads.net',
+  ];
+  function isDefaultHost(host) {
+    return DEFAULT_HOSTS.some(d => host === d || host.endsWith('.' + d));
+  }
 
   const sitesList = document.getElementById('sitesList');
   const siteInput = document.getElementById('siteInput');
@@ -351,7 +373,13 @@
     // Delete
     sitesList.querySelectorAll('.del-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        sites.splice(parseInt(btn.dataset.i), 1);
+        const idx = parseInt(btn.dataset.i);
+        const removed = sites[idx];
+        sites.splice(idx, 1);
+        // Unregister dynamic script for custom (non-default) sites
+        if (removed && !isDefaultHost(removed.host)) {
+          chrome.runtime.sendMessage({ type: 'UNREGISTER_CUSTOM_SITE', host: removed.host }).catch(() => {});
+        }
         saveSites(sites);
       });
     });
@@ -388,14 +416,32 @@
         return s;
       });
       if (sites.some(s => s.host === val)) return;
-      sites.push({ host: val, types: [...addSelectedTypes] });
-      saveSites(sites);
-      siteInput.value = '';
-      // Reset add toggle back to Feed only
-      addSelectedTypes = new Set(['feed']);
-      addTypeToggle.querySelectorAll('.type-btn').forEach(b => {
-        b.classList.toggle('selected', b.dataset.type === 'feed');
-      });
+
+      function doAdd() {
+        sites.push({ host: val, types: [...addSelectedTypes] });
+        saveSites(sites);
+        siteInput.value = '';
+        // Reset add toggle back to Feed only
+        addSelectedTypes = new Set(['feed']);
+        addTypeToggle.querySelectorAll('.type-btn').forEach(b => {
+          b.classList.toggle('selected', b.dataset.type === 'feed');
+        });
+      }
+
+      // Custom (non-default) sites need a host permission grant + dynamic script
+      if (!isDefaultHost(val)) {
+        chrome.permissions.request(
+          { origins: [`*://*.${val}/*`] },
+          (granted) => {
+            if (!granted) return; // user declined
+            chrome.runtime.sendMessage({ type: 'REGISTER_CUSTOM_SITE', host: val }, () => {
+              doAdd();
+            });
+          }
+        );
+      } else {
+        doAdd();
+      }
     });
   });
 

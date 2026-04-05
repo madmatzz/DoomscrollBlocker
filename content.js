@@ -14,7 +14,6 @@
     isTwitter: host === 'twitter.com' || host === 'x.com',
     isReddit: host === 'reddit.com',
     isFacebook: host === 'facebook.com',
-    isLinkedin: host === 'linkedin.com',
     isThreads: host === 'threads.net' || host === 'threads.com',
   };
 
@@ -31,10 +30,16 @@
     if (SITE.isInstagram) {
       if (path.startsWith('/reels')) return 'shorts';
       if (path.startsWith('/stories')) return 'ignore';
+      if (path.startsWith('/p/')) return 'ignore';       // individual post — comments
       return 'scroll';
     }
     if (SITE.isTwitter) {
       if (path.startsWith('/i/videos')) return 'shorts';
+      if (/^\/[^/]+\/status\//.test(path)) return 'ignore'; // individual tweet — comments
+      return 'scroll';
+    }
+    if (SITE.isReddit) {
+      if (/\/comments\//.test(path)) return 'ignore';    // individual post — comments
       return 'scroll';
     }
     return 'scroll';
@@ -580,8 +585,24 @@
 
   function onUrlChange() {
     setTimeout(() => {
-      totalScrolled = 0; swipeCount = 0; lastScrollY = window.scrollY; maxScrollY = window.scrollY; seenUrls = new Set();
-      if (getMode() === 'ignore') cancelFriction();
+      const newMode = getMode();
+
+      // When returning to the feed from an ignored page (e.g. Reddit post → feed),
+      // keep the accumulated scroll count — just reset the scroll anchor to current position
+      // so we start measuring new scroll from here.
+      if (newMode === 'ignore') {
+        cancelFriction();
+      } else if (newMode === 'shorts') {
+        // Entering shorts mode — reset scroll counters but keep swipes
+        totalScrolled = 0;
+        lastScrollY = window.scrollY;
+        maxScrollY = window.scrollY;
+      } else {
+        // Returning to scroll mode — reset scroll position anchor only
+        lastScrollY = window.scrollY;
+        maxScrollY = window.scrollY;
+      }
+
       checkSwipe();
     }, 150);
   }
@@ -621,7 +642,6 @@
         { host: 'tiktok.com',    types: ['shorts']         },
         { host: 'x.com',         types: ['feed']           },
         { host: 'reddit.com',    types: ['feed']           },
-        { host: 'linkedin.com',  types: ['feed']           },
         { host: 'threads.net',   types: ['feed']           },
       ];
 
@@ -640,7 +660,7 @@
 
       // For custom sites not in SITE map, override getMode() based on the first user-defined type
       const customModeOverride = (!SITE.isYoutube && !SITE.isTiktok && !SITE.isInstagram &&
-        !SITE.isTwitter && !SITE.isReddit && !SITE.isFacebook && !SITE.isLinkedin && !SITE.isThreads)
+        !SITE.isTwitter && !SITE.isReddit && !SITE.isFacebook && !SITE.isThreads)
         ? (matchTypes.includes('shorts') && !matchTypes.includes('feed') ? 'shorts' : 'scroll')
         : null;
 

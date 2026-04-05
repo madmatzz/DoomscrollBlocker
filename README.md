@@ -17,7 +17,7 @@ Doomscroll Blocker monitors how far you scroll on social media feeds and how man
 ## Features
 
 - **Scroll pixel counter** — set a threshold for feed-based sites
-- **Short-video swipe counter** — set a swipe limit for Shorts/Reels/TikTok
+- **Short-video swipe counter** — set a swipe limit for short videos
 - **Soft Mode** — press and hold for 3 seconds to dismiss the interruption
 - **Hard Mode** — a timed break is the only way out
 - **Break timer** — 5, 10, 15, 30, 60 min or custom duration
@@ -28,7 +28,7 @@ Doomscroll Blocker monitors how far you scroll on social media feeds and how man
 
 ### Monitored by Default
 
-YouTube Shorts · TikTok · Instagram (Feed + Reels) · Facebook · X (Twitter) · Reddit · LinkedIn · Threads
+Popular social media feeds and short-form video platforms.
 
 ---
 

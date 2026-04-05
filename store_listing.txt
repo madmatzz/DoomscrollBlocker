@@ -1,0 +1,35 @@
+Doomscroll Blocker
+
+A Chrome extension that interrupts mindless scrolling on social feeds before the algorithm wins.
+
+What It Does
+Doomscroll Blocker monitors how far you scroll on timeline feeds and how many short-form videos you watch. When you hit a limit that you set for yourself, a full-screen friction card interrupts you and forces you to make an intentional choice before continuing.
+
+Features
+- Scroll pixel counter — set a distance threshold for timeline-based sites
+- Short-video swipe counter — set a swipe limit for short videos
+- Soft Mode — press and hold for 3 seconds to dismiss the interruption
+- Hard Mode — a timed break is the only way out
+- Break timer — 5, 10, 15, 30, 60 min or custom duration
+- Draggable mini-pill — shows your remaining break time on any page
+- Customizable site list — add any website, choose Feed, Shorts, or both
+- Per-session stats — scroll distance and video count shown in the popup
+- Quick pause — pause for 5 minutes without setting a full break
+
+Monitored by Default
+Popular social feeds and short-form video platforms.
+
+How to Use
+1. Click the extension icon to open the popup
+2. Set your scroll limit (pixels) and swipe limit using the sliders
+3. Browse normally — the extension runs in the background
+4. When you hit your limit, a card will appear:
+   - Soft Mode: press and hold the button for 3 seconds to continue
+   - Hard Mode: take a break — choose a duration and wait it out
+5. A green mini-pill shows your remaining break time as you browse
+
+Privacy
+All data stays in your browser. No tracking, no analytics, no external servers.
+- Scroll counts and video counts are session-only (reset on page reload)
+- Settings are stored locally via your browser's built-in storage
+- No page content is ever read, stored, or transmitted

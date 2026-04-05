@@ -6,9 +6,9 @@
   "permissions": [
     "storage",
     "alarms",
-    "tabs"
+    "scripting"
   ],
-  "host_permissions": [
+  "optional_host_permissions": [
     "<all_urls>"
   ],
   "background": {
@@ -17,7 +17,13 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+        "*://*.youtube.com/*",
+        "*://*.facebook.com/*",
+        "*://*.instagram.com/*",
+        "*://*.tiktok.com/*",
+        "*://*.x.com/*",
+        "*://*.reddit.com/*",
+        "*://*.threads.net/*"
       ],
       "js": [
         "content.js"
@@ -43,5 +49,11 @@
     "32": "icons/icon32.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/*.ttf"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

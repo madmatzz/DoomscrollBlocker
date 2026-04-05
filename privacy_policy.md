@@ -1,6 +1,6 @@
 # Privacy Policy — Doomscroll Blocker
 
-**Last updated:** March 2026
+**Last updated:** April 2026
 
 ## Overview
 
@@ -16,7 +16,7 @@ To function, the Extension accesses the following information **locally in your 
 |---|---|---|
 | Current page URL / hostname | Checks if the site is on your monitored list | No — checked in memory only |
 | Scroll distance (pixels) | Counts how far you've scrolled to detect doomscrolling | Session only — reset on page reload |
-| Short-video URL changes | Counts how many Shorts/Reels/TikToks you've watched | Session only — reset on page reload |
+| Short-video URL changes | Counts how many short-form videos you've watched | Session only — reset on page reload |
 | Your settings (thresholds, tracked sites, break timers) | Saves your preferences | Yes — `chrome.storage.sync` (your own browser account) |
 
 ---
@@ -53,8 +53,9 @@ Your settings (scroll threshold, tracked site list, break timer state) are saved
 |---|---|
 | `storage` | Save and restore your settings (thresholds, site list, break state) |
 | `alarms` | Wake the extension's service worker when a break timer expires |
-| `tabs` | Send messages between the popup and the active page |
-| Access to all URLs | The monitored site list is user-configurable — the extension must run on any site the user chooses to monitor |
+| `scripting` | Dynamically inject the content script on custom sites you add to your monitored list |
+| Access to specific sites (youtube.com, facebook.com, etc.) | The extension monitors scroll distance and video counts on these default social media sites |
+| Optional access to additional sites | When you add a custom site, Chrome prompts you to grant access to that specific domain |
 
 ---
 
