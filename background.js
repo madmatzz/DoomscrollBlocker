@@ -167,5 +167,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       .catch(e => sendResponse({ ok: false, error: e.message }));
     return true;
   }
+  if (msg.type === 'GET_LOCALE_STRINGS') {
+    fetch(chrome.runtime.getURL(`_locales/${msg.lang}/messages.json`))
+      .then(r => r.json())
+      .then(data => sendResponse({ ok: true, data }))
+      .catch(e => sendResponse({ ok: false, error: e.message }));
+    return true;
+  }
   return true;
 });

@@ -1,11 +1,28 @@
 // content.js — DoomScroll Blocker
 
-(function () {
+(async function () {
   'use strict';
 
+  let customDict = null;
+  try {
+    const { customLang } = await chrome.storage.sync.get('customLang');
+    const lang = customLang || 'auto';
+    if (lang !== 'auto') {
+      const resp = await chrome.runtime.sendMessage({ type: 'GET_LOCALE_STRINGS', lang });
+      if (resp && resp.ok) customDict = resp.data;
+    }
+  } catch (e) {
+    console.error('[DoomScroll] failed to init custom i18n:', e);
+  }
 
-
-  // ─── Page context detection ──────────────────────────────────────────────────
+  function msg(key, subs = []) {
+    let str = (customDict && customDict[key]) ? customDict[key].message : (chrome.i18n.getMessage(key) || key);
+    if (subs.length && str) {
+      str = str.replace(/\$[A-Z]+\$/g, '$1');
+      subs.forEach((val, i) => str = str.replace(new RegExp(`\\$${i + 1}`, 'g'), val));
+    }
+    return str;
+  }  // ─── Page context detection ──────────────────────────────────────────────────
   const host = location.hostname.replace('www.', '');
   const SITE = {
     isYoutube: host === 'youtube.com',
@@ -123,7 +140,7 @@
 
   // Built once, reused each trigger — only the backdrop now (no card inside)
   frictionEl.innerHTML = `
-    <div id="doomscroll-word">DOOMSCROLLING</div>
+    <div id="doomscroll-word">${msg('doomscrolling').toUpperCase()}</div>
   `;
 
   // ─── Card uses a native <dialog> element rendered in the browser TOP LAYER ───
@@ -133,23 +150,23 @@
   const frictionCardEl = document.createElement('dialog');
   frictionCardEl.id = 'doomscroll-friction-card';
   frictionCardEl.innerHTML = `
-    <div id="doomscroll-card-word">doomscrolling detected</div>
+    <div id="doomscroll-card-word">${msg('doomscrollingDetected')}</div>
     <div id="doomscroll-friction-btns">
-      <button id="doomscroll-btn-continue"><span>keep wasting my life</span></button>
-      <div id="doomscroll-btn-hint">press for 3 seconds to continue</div>
+      <button id="doomscroll-btn-continue"><span>${msg('keepWastingLife')}</span></button>
+      <div id="doomscroll-btn-hint">${msg('pressToContinue')}</div>
     </div>
   `;
 
   // ─── DOM — existing elements ─────────────────────────────────────────────────
   const overlay = document.createElement('div'); overlay.id = 'doomscroll-overlay';
-  const label = document.createElement('div'); label.id = 'doomscroll-label'; label.textContent = 'doomscrolling';
+  const label = document.createElement('div'); label.id = 'doomscroll-label'; label.textContent = msg('doomscrolling');
   const counter = document.createElement('div'); counter.id = 'doomscroll-counter';
   const actionBar = document.createElement('div'); actionBar.id = 'doomscroll-action-bar';
   const pausedBanner = document.createElement('div');
   pausedBanner.id = 'doomscroll-paused-banner';
   pausedBanner.innerHTML = `
     <span id="doomscroll-paused-icon">🕐</span>
-    <span id="doomscroll-paused-text">break</span>
+    <span id="doomscroll-paused-text">${msg('break')}</span>
     <span id="doomscroll-paused-timer"></span>
     <button id="doomscroll-stop-btn" title="Stop break">✕</button>
   `;
@@ -163,9 +180,9 @@
       b.addEventListener('click', fn);
       return b;
     };
-    actionBar.appendChild(mk('↺ Reset', '', resetScroll));
-    actionBar.appendChild(mk('⏸ Pause 5m', '', () => pause(5)));
-    actionBar.appendChild(mk('☕ Take a break', 'primary', openBreakDialog));
+    actionBar.appendChild(mk(msg('resetScroll'), '', resetScroll));
+    actionBar.appendChild(mk('⏸ ' + msg('paused') + ' 5m', '', () => pause(5)));
+    actionBar.appendChild(mk(msg('setBreak'), 'primary', openBreakDialog));
   }
 
   function injectElements() {
@@ -259,10 +276,10 @@
       pillWasDrag = false; // reset on every new mousedown
       const r = pausedBanner.getBoundingClientRect();
       // Switch from right-anchored CSS to explicit left/top so we can freely reposition
-      pausedBanner.style.right  = 'auto';
+      pausedBanner.style.right = 'auto';
       pausedBanner.style.bottom = 'auto';
       pausedBanner.style.left = r.left + 'px';
-      pausedBanner.style.top  = r.top  + 'px';
+      pausedBanner.style.top = r.top + 'px';
       pillStartX = e.clientX; pillStartY = e.clientY;
       pillLeft = r.left; pillTop = r.top;
       pausedBanner.style.cursor = 'grabbing';
@@ -274,7 +291,7 @@
       const dy = e.clientY - pillStartY;
       if (Math.abs(dx) > 5 || Math.abs(dy) > 5) pillWasDrag = true; // moved enough = drag
       pausedBanner.style.left = (pillLeft + dx) + 'px';
-      pausedBanner.style.top  = (pillTop  + dy) + 'px';
+      pausedBanner.style.top = (pillTop + dy) + 'px';
     });
     document.addEventListener('mouseup', () => {
       if (!pillDragging) return;
@@ -305,6 +322,7 @@
 
   // ─── Swipe counter ───────────────────────────────────────────────────────────
   function checkSwipe() {
+    if (!settings.enabled || settings.paused) return;
     if (getMode() !== 'shorts') return;
     const url = location.href;
     if (url === lastUrl) return;
@@ -334,7 +352,16 @@
   function update() {
     ticking = false;
     // Use cached settings — do NOT call loadSettings() here (storage is async + rate-limited)
-    if (!settings.enabled || settings.paused) { showPausedState(); return; }
+    if (!settings.enabled) {
+      hidePausedState();
+      cancelFriction();
+      setOverlay(0);
+      hideLabel();
+      hideActionBar();
+      updateCounter(false);
+      return;
+    }
+    if (settings.paused) { showPausedState(); return; }
     hidePausedState();
 
     const mode = getMode();
@@ -374,7 +401,7 @@
 
     const shameBtn = document.getElementById('doomscroll-btn-continue');
     if (shameBtn) {
-      shameBtn.innerHTML = '<span>THE ALGORITHM WINS AGAIN</span>';
+      shameBtn.innerHTML = '<span>' + msg('algorithmWins') + '</span>';
       shameBtn.style.display = settings.strictMode ? 'none' : '';
     }
 
@@ -433,9 +460,9 @@
     if (!show) { counter.classList.remove('visible'); return; }
     counter.classList.add('visible');
     if (getMode() === 'shorts') {
-      counter.textContent = `${swipeCount} / ${settings.shortsThreshold || 5} videos`;
+      counter.textContent = `${swipeCount} / ${settings.shortsThreshold || 5}` + msg('unitVideos');
     } else {
-      counter.textContent = `scrolled ${(totalScrolled / 1000).toFixed(1)}k px`;
+      counter.textContent = `${(totalScrolled / 1000).toFixed(1)}k` + msg('unitPx');
     }
   }
 
@@ -451,6 +478,11 @@
   }
 
   function showPausedState() {
+    if (!settings.breakUntil && !settings.pauseUntil) {
+      hidePausedState();
+      return;
+    }
+
     cancelFriction(); counter.classList.remove('visible');
     const iconEl = document.getElementById('doomscroll-paused-icon');
     const textEl = document.getElementById('doomscroll-paused-text');
@@ -461,16 +493,20 @@
       const now = Date.now();
       if (settings.breakUntil && settings.breakUntil > now) {
         if (iconEl) iconEl.textContent = '🕐';
-        if (textEl) textEl.textContent = 'break';
+        if (textEl) textEl.textContent = msg('break');
         if (timerEl) timerEl.textContent = formatCountdown(settings.breakUntil - now);
       } else if (settings.pauseUntil && settings.pauseUntil > now) {
         if (iconEl) iconEl.textContent = '⏸';
-        if (textEl) textEl.textContent = 'paused';
+        if (textEl) textEl.textContent = msg('paused');
         if (timerEl) timerEl.textContent = formatCountdown(settings.pauseUntil - now);
+      } else if (settings.breakUntil || settings.pauseUntil) {
+        // Timer expired on the client side! Auto-hide immediately before background even signals
+        settings.paused = false;
+        settings.breakUntil = null; settings.pauseUntil = null;
+        chrome.storage.sync.set({ paused: false, breakUntil: null, pauseUntil: null });
+        hidePausedState();
       } else {
-        if (iconEl) iconEl.textContent = '⏸';
-        if (textEl) textEl.textContent = 'paused';
-        if (timerEl) timerEl.textContent = '';
+        hidePausedState();
       }
     }
 
@@ -500,7 +536,7 @@
 
   function openBreakDialog() {
     const existing = document.getElementById('doom-break-dialog');
-    if (existing) { try { existing.close(); } catch(e){} existing.remove(); }
+    if (existing) { try { existing.close(); } catch (e) { } existing.remove(); }
 
     // Use a native <dialog> + showModal() so it renders in the browser top layer —
     // immune to Reddit's transform/overflow on ancestor elements (same fix as friction card)
@@ -516,19 +552,19 @@
       line-height:1.2;
     `;
     dlg.innerHTML = `
-      <div style="font-family:'Tomorrow',sans-serif;font-size:18px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#4ade80;text-shadow:0 0 15px rgba(74,222,128,0.4);margin-bottom:16px;animation:shimmerBlurGreen 3.5s ease-in-out infinite;">I deserve some free time</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:22px;line-height:1.5;">The blocker will sleep for this long.<br>Scroll freely, no interruptions.</div>
-      <div style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;color:rgba(74,222,128,0.45);">how long do you need?</div>
+      <div style="font-family:'Tomorrow',sans-serif;font-size:18px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:#4ade80;text-shadow:0 0 15px rgba(74,222,128,0.4);margin-bottom:16px;animation:shimmerBlurGreen 3.5s ease-in-out infinite;">${msg('deserveFreeTime')}</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:22px;line-height:1.5;">${msg('blockerSleep')}</div>
+      <div style="font-size:9px;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;color:rgba(74,222,128,0.45);">${msg('howLongNeed')}</div>
       <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
-        ${[5, 10, 15, 30, 60].map(m => `<button class="doom-preset-btn" data-mins="${m}" style="padding:8px 14px;border:1px solid rgba(74,222,128,0.3);background:transparent;color:rgba(74,222,128,0.8);font-family:'Tomorrow',sans-serif;font-size:12px;cursor:pointer;border-radius:4px;transition:all 0.15s;" onmouseover="this.style.background='rgba(74,222,128,0.12)';this.style.borderColor='rgba(74,222,128,0.7)'" onmouseout="if(!this.classList.contains('selected-preset')){this.style.background='transparent';this.style.borderColor='rgba(74,222,128,0.3)'}">${m}m</button>`).join('')}
+        ${[5, 10, 15, 30, 60].map(m => `<button class="doom-preset-btn" data-mins="${m}" style="padding:8px 14px;border:1px solid rgba(74,222,128,0.3);background:transparent;color:rgba(74,222,128,0.8);font-family:'Tomorrow',sans-serif;font-size:12px;cursor:pointer;border-radius:4px;transition:all 0.15s;" onmouseover="this.style.background='rgba(74,222,128,0.12)';this.style.borderColor='rgba(74,222,128,0.7)'" onmouseout="if(!this.classList.contains('selected-preset')){this.style.background='transparent';this.style.borderColor='rgba(74,222,128,0.3)'}">${m}${msg('unitM')}</button>`).join('')}
       </div>
       <div style="display:flex;gap:8px;align-items:center;margin-bottom:20px;">
-        <input id="doom-custom-mins" type="number" min="1" max="480" placeholder="Custom..." style="flex:1;padding:8px 12px;background:#0d1a10;border:1px solid rgba(74,222,128,0.2);border-radius:4px;color:#4ade80;font-family:'Tomorrow',sans-serif;font-size:13px;outline:none;line-height:1;"/>
-        <span style="font-size:11px;color:rgba(74,222,128,0.4);">min</span>
+        <input id="doom-custom-mins" type="number" min="1" max="480" placeholder="${msg('customMinsPlaceholder')}" style="flex:1;padding:8px 12px;background:#0d1a10;border:1px solid rgba(74,222,128,0.2);border-radius:4px;color:#4ade80;font-family:'Tomorrow',sans-serif;font-size:13px;outline:none;line-height:1;"/>
+        <span style="font-size:11px;color:rgba(74,222,128,0.4);">${msg('unitMin')}</span>
       </div>
       <div style="display:flex;gap:10px;">
-        <button id="doom-break-confirm" style="flex:1;padding:11px;background:rgba(74,222,128,0.18);border:1px solid #4ade80;color:#4ade80;font-family:'Tomorrow',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:all 0.15s;line-height:1;" onmouseover="this.style.background='rgba(74,222,128,0.3)'" onmouseout="this.style.background='rgba(74,222,128,0.18)'">enjoy the break ✓</button>
-        <button id="doom-break-cancel" style="padding:11px 16px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);font-family:'Tomorrow',sans-serif;font-size:12px;cursor:pointer;border-radius:4px;transition:all 0.15s;line-height:1;" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.3)'">cancel</button>
+        <button id="doom-break-confirm" style="flex:1;padding:11px;background:rgba(74,222,128,0.18);border:1px solid #4ade80;color:#4ade80;font-family:'Tomorrow',sans-serif;font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:all 0.15s;line-height:1;" onmouseover="this.style.background='rgba(74,222,128,0.3)'" onmouseout="this.style.background='rgba(74,222,128,0.18)'">${msg('enjoyBreak')}</button>
+        <button id="doom-break-cancel" style="padding:11px 16px;background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.3);font-family:'Tomorrow',sans-serif;font-size:12px;cursor:pointer;border-radius:4px;transition:all 0.15s;line-height:1;" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='rgba(255,255,255,0.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.3)'">${msg('dialogCancel')}</button>
       </div>
     `;
 
@@ -543,7 +579,7 @@
       document.head.appendChild(s);
     }
 
-    const close = () => { try { dlg.close(); } catch(e){} dlg.remove(); };
+    const close = () => { try { dlg.close(); } catch (e) { } dlg.remove(); };
 
     dlg.querySelector('#doom-break-cancel').addEventListener('click', close);
     dlg.addEventListener('cancel', close); // ESC key
@@ -628,7 +664,7 @@
       settings.paused = false; settings.breakUntil = null; settings.pauseUntil = null;
       hidePausedState();
     }
-    if (msg.type === 'SETTINGS_UPDATED') loadSettings(() => { });
+    if (msg.type === 'SETTINGS_UPDATED') loadSettings(() => { update(); });
     if (msg.type === 'RESET_SCROLL') resetScroll();
   });
 
@@ -636,13 +672,13 @@
   function init() {
     loadSettings(() => {
       const trackedSites = settings.trackedSites || [
-        { host: 'youtube.com',   types: ['shorts']         },
-        { host: 'facebook.com',  types: ['feed']           },
+        { host: 'youtube.com', types: ['shorts'] },
+        { host: 'facebook.com', types: ['feed'] },
         { host: 'instagram.com', types: ['feed', 'shorts'] },
-        { host: 'tiktok.com',    types: ['shorts']         },
-        { host: 'x.com',         types: ['feed']           },
-        { host: 'reddit.com',    types: ['feed']           },
-        { host: 'threads.net',   types: ['feed']           },
+        { host: 'tiktok.com', types: ['shorts'] },
+        { host: 'x.com', types: ['feed'] },
+        { host: 'reddit.com', types: ['feed'] },
+        { host: 'threads.net', types: ['feed'] },
       ];
 
       const currentHost = location.hostname.replace('www.', '');
@@ -677,7 +713,7 @@
       if (matchTypes.includes('shorts') || SITE.isYoutube || SITE.isTiktok || SITE.isInstagram || SITE.isTwitter) {
         setInterval(checkSwipe, 400);
       }
-      setInterval(() => { if (settings.paused) showPausedState(); }, 30000);
+      setInterval(() => { if (settings.enabled && settings.paused) showPausedState(); }, 30000);
     });
   }
 

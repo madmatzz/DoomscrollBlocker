@@ -1,0 +1,189 @@
+{
+  "appName": {
+    "message": "DoomScroll Blocker"
+  },
+  "appDesc": {
+    "message": "Limita el desplazamiento interminable en redes sociales y videos cortos. Establece límites, recibe interrupciones y toma descansos intencionales."
+  },
+  "logoSub": {
+    "message": "Extensión de Conciencia de Desplazamiento"
+  },
+  "statusDisabled": {
+    "message": "Bloqueador desactivado"
+  },
+  "statusPausedMins": {
+    "message": "En descanso — $MINS$m restantes",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusPausedIndef": {
+    "message": "En descanso — indefinido"
+  },
+  "statusActive": {
+    "message": "Monitoreando tu desplazamiento"
+  },
+  "statusInactive": {
+    "message": "Inactivo en esta página"
+  },
+  "statusLoading": {
+    "message": "Cargando…"
+  },
+  "thisSession": {
+    "message": "Esta sesión"
+  },
+  "pixelsScrolled": {
+    "message": "Píxeles desplazados"
+  },
+  "shortsWatched": {
+    "message": "Shorts vistos"
+  },
+  "unitPx": {
+    "message": " px"
+  },
+  "unitVideos": {
+    "message": " videos"
+  },
+  "sensitivity": {
+    "message": "Sensibilidad"
+  },
+  "scrollTrigger": {
+    "message": "Límite de desplazamiento"
+  },
+  "shortsTrigger": {
+    "message": "Límite de YouTube Shorts"
+  },
+  "scrollDesc": {
+    "message": "Reddit, Instagram feed, Facebook, LinkedIn…"
+  },
+  "shortsDesc": {
+    "message": "YouTube Shorts, TikTok, Instagram Reels, X Videos — cada deslizamiento = 1"
+  },
+  "interventionMode": {
+    "message": "Modo de intervención"
+  },
+  "softFriction": {
+    "message": "Fricción suave"
+  },
+  "badgeDefault": {
+    "message": "por defecto"
+  },
+  "softDesc": {
+    "message": "Aparece una ventana emergente con la opción de \"Continuar de todos modos\"."
+  },
+  "hardBlock": {
+    "message": "Bloqueo estricto"
+  },
+  "hardDesc": {
+    "message": "Aparece una ventana emergente sin opción para continuar. Tomar un descanso es tu única escapatoria."
+  },
+  "takeABreak": {
+    "message": "Tomar un descanso"
+  },
+  "breakActive": {
+    "message": "Descanso activo"
+  },
+  "resumeNow": {
+    "message": "Reanudar ahora"
+  },
+  "setBreak": {
+    "message": "☕ Establecer descanso"
+  },
+  "indefinite": {
+    "message": "Indefinido"
+  },
+  "customMinsPlaceholder": {
+    "message": "Minutos…"
+  },
+  "startBreak": {
+    "message": "Iniciar Descanso"
+  },
+  "monitoredSites": {
+    "message": "Sitios monitoreados"
+  },
+  "badgeFeed": {
+    "message": "Feed"
+  },
+  "badgeShorts": {
+    "message": "Shorts"
+  },
+  "btnAdd": {
+    "message": "Añadir"
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "save": {
+    "message": "✓ guardar"
+  },
+  "footerText": {
+    "message": "v1.1.1 · Bloqueador de redes sociales"
+  },
+  "footerPrivacy": {
+    "message": "Los datos son locales · Sin rastreo"
+  },
+  "resetScroll": {
+    "message": "↺ Reiniciar desplazamiento"
+  },
+  "resetDone": {
+    "message": "✓ ¡Reiniciado!"
+  },
+  "doomscrolling": {
+    "message": "doomscrolling"
+  },
+  "doomscrollingDetected": {
+    "message": "doomscrolling detectado"
+  },
+  "keepWastingLife": {
+    "message": "seguir perdiendo mi tiempo"
+  },
+  "pressToContinue": {
+    "message": "mantén presionado por 3 segundos"
+  },
+  "algorithmWins": {
+    "message": "EL ALGORITMO GANA OTRA VEZ"
+  },
+  "paused": {
+    "message": "pausado"
+  },
+  "break": {
+    "message": "descanso"
+  },
+  "deserveFreeTime": {
+    "message": "Merezco un poco de tiempo libre"
+  },
+  "blockerSleep": {
+    "message": "El bloqueador dormirá por este tiempo.<br>Desplázate libremente, sin interrupciones."
+  },
+  "howLongNeed": {
+    "message": "¿cuánto tiempo necesitas?"
+  },
+  "enjoyBreak": {
+    "message": "disfruta el descanso ✓"
+  },
+  "dialogCancel": {
+    "message": "cancelar"
+  },
+  "breakTimerDialog": {
+    "message": "El descanso termina en $MINS$ min",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "timerActiveIndef": {
+    "message": "Descanso activo — indefinido"
+  },
+  "unitMin": {
+    "message": "min"
+  },
+  "unitH": {
+    "message": "h"
+  },
+  "unitM": {
+    "message": "m"
+  }
+}

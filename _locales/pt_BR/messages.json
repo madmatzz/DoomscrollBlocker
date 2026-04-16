@@ -1,0 +1,189 @@
+{
+  "appName": {
+    "message": "DoomScroll Blocker"
+  },
+  "appDesc": {
+    "message": "Limite a rolagem automática em redes sociais e vídeos curtos. Defina limites, seja interrompido e faça pausas intencionais."
+  },
+  "logoSub": {
+    "message": "Extensão de Consciência de Rolagem"
+  },
+  "statusDisabled": {
+    "message": "Bloqueador desativado"
+  },
+  "statusPausedMins": {
+    "message": "Em pausa — faltam $MINS$m",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusPausedIndef": {
+    "message": "Em pausa — indefinido"
+  },
+  "statusActive": {
+    "message": "Monitorando sua rolagem"
+  },
+  "statusInactive": {
+    "message": "Inativo nesta página"
+  },
+  "statusLoading": {
+    "message": "Carregando…"
+  },
+  "thisSession": {
+    "message": "Nesta sessão"
+  },
+  "pixelsScrolled": {
+    "message": "Pixels rolados"
+  },
+  "shortsWatched": {
+    "message": "Shorts assistidos"
+  },
+  "unitPx": {
+    "message": " px"
+  },
+  "unitVideos": {
+    "message": " vídeos"
+  },
+  "sensitivity": {
+    "message": "Sensibilidade"
+  },
+  "scrollTrigger": {
+    "message": "Limite de rolagem"
+  },
+  "shortsTrigger": {
+    "message": "Limite de YouTube Shorts"
+  },
+  "scrollDesc": {
+    "message": "Reddit, Instagram feed, Facebook, LinkedIn…"
+  },
+  "shortsDesc": {
+    "message": "YouTube Shorts, TikTok, Instagram Reels, X Videos — cada deslize = 1"
+  },
+  "interventionMode": {
+    "message": "Modo de intervenção"
+  },
+  "softFriction": {
+    "message": "Fricção suave"
+  },
+  "badgeDefault": {
+    "message": "padrão"
+  },
+  "softDesc": {
+    "message": "Aparece um pop-up com a opção \"Continuar de qualquer forma\"."
+  },
+  "hardBlock": {
+    "message": "Bloqueio total"
+  },
+  "hardDesc": {
+    "message": "Aparece um pop-up — sem como continuar a rolar. Fazer uma pausa é a sua única saída."
+  },
+  "takeABreak": {
+    "message": "Fazer uma pausa"
+  },
+  "breakActive": {
+    "message": "Pausa ativa"
+  },
+  "resumeNow": {
+    "message": "Retomar agora"
+  },
+  "setBreak": {
+    "message": "☕ Definir uma pausa"
+  },
+  "indefinite": {
+    "message": "Indefinido"
+  },
+  "customMinsPlaceholder": {
+    "message": "Minutos…"
+  },
+  "startBreak": {
+    "message": "Iniciar Pausa"
+  },
+  "monitoredSites": {
+    "message": "Sites monitorados"
+  },
+  "badgeFeed": {
+    "message": "Feed"
+  },
+  "badgeShorts": {
+    "message": "Shorts"
+  },
+  "btnAdd": {
+    "message": "Adicionar"
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "save": {
+    "message": "✓ salvar"
+  },
+  "footerText": {
+    "message": "v1.1.1 · Bloqueador de redes sociais"
+  },
+  "footerPrivacy": {
+    "message": "Dados locais · Sem rastreamento"
+  },
+  "resetScroll": {
+    "message": "↺ Redefinir rolagem"
+  },
+  "resetDone": {
+    "message": "✓ Redefinido!"
+  },
+  "doomscrolling": {
+    "message": "doomscrolling"
+  },
+  "doomscrollingDetected": {
+    "message": "doomscrolling detectado"
+  },
+  "keepWastingLife": {
+    "message": "continuar perdendo meu tempo"
+  },
+  "pressToContinue": {
+    "message": "pressione por 3 segundos para continuar"
+  },
+  "algorithmWins": {
+    "message": "O ALGORITMO VENCE NOVAMENTE"
+  },
+  "paused": {
+    "message": "pausado"
+  },
+  "break": {
+    "message": "pausa"
+  },
+  "deserveFreeTime": {
+    "message": "Eu mereço um tempo livre"
+  },
+  "blockerSleep": {
+    "message": "O bloqueador dormirá por esse tempo.<br>Role livremente, sem interrupções."
+  },
+  "howLongNeed": {
+    "message": "de quanto tempo você precisa?"
+  },
+  "enjoyBreak": {
+    "message": "aproveite a pausa ✓"
+  },
+  "dialogCancel": {
+    "message": "cancelar"
+  },
+  "breakTimerDialog": {
+    "message": "A pausa termina em $MINS$ min",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "timerActiveIndef": {
+    "message": "Pausa ativa — indefinido"
+  },
+  "unitMin": {
+    "message": "min"
+  },
+  "unitH": {
+    "message": "h"
+  },
+  "unitM": {
+    "message": "m"
+  }
+}

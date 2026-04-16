@@ -1,0 +1,114 @@
+===================================
+SPANISH (ES)
+===================================
+Doomscroll Blocker - Deja de hacer Scroll y Concéntrate
+
+¿QUÉ HACE?
+Doomscroll Blocker es una herramienta de productividad inteligente y un bloqueador de sitios web que te interrumpe físicamente cuando llevas demasiado tiempo haciendo scroll. Rastrea cuánto desciendes en los feeds y cuántos videos cortos ves. Cuando alcanzas tu límite personal, un bloqueo de pantalla completa cubre tu feed al instante. Para continuar, debes tomar una decisión consciente: hacer una pausa plena (Modo Suave) o bloquearte por completo para concentrarte (Modo Estricto).
+
+¿POR QUÉ DEBERÍAS INSTALARLO?
+Si alguna vez abriste un sitio web solo para revisar una cosa, y de repente te diste cuenta de que pasó una hora en un trance de scroll, esta extensión es para ti.
+
+Los algoritmos modernos están diseñados para secuestrar tu atención. Doomscroll Blocker te la devuelve. Deberías instalar esto para:
+- Romper Malos Hábitos: Detener el ciclo automático de scroll infinito cuando estás aburrido.
+- Recuperar tu Tiempo: Ahorrar horas de tiempo de pantalla perdido e improductivo cada semana.
+- Mejorar el Bienestar Digital: Limitar tu exposición diaria a feeds interminables de videos cortos.
+- Aumentar la Productividad: Usa el temporizador estricto del "Modo Estricto" para bloquear sitios web que te distraen cuando necesitas concentrarte desesperadamente en el estudio o el trabajo.
+
+CARACTERÍSTICAS DE UN VISTAZO
+- Contador de Scroll Inteligente: Establece un límite estricto de scroll para sitios web basados en feeds.
+- Limitador de Swipes de Video: Establece un límite exacto para plataformas de videos cortos.
+- Modo Suave (Fricción Plena): Mantén presionado durante 3 segundos para descartar la interrupción.
+- Modo Estricto (Modo Concentración): Un bloqueo estricto y temporizado para cuando necesitas concentración profunda.
+- Temporizadores Personalizables: Elige entre 5, 10, 15, 30, 60 minutos o duraciones personalizadas.
+- Estadísticas en Vivo: Rastrea tu distancia de scroll y cuenta de videos directamente desde el menú de la extensión.
+- 100% Privado: Todos los datos permanecen completamente locales en tu dispositivo. Sin rastreo, sin servidores externos.
+
+Recupera el control de tu atención. ¡Instala Doomscroll Blocker hoy y detén el scroll!
+
+
+===================================
+PORTUGUESE (PT-BR)
+===================================
+Doomscroll Blocker - Pare o Scroll e Foco
+
+O QUE ELE FAZ?
+O Doomscroll Blocker é uma ferramenta de produtividade inteligente e um bloqueador de sites que interrompe você fisicamente quando você está rolando a tela por muito tempo. Ele rastreia até onde você rola em feeds de linha do tempo e quantos rolos de vídeos curtos você assiste. Quando você atinge seu limite pessoal, um bloqueio de tela inteira cobre instantaneamente o seu feed. Para continuar, você deve fazer uma escolha consciente: ou fazer uma pausa atenta (Modo Suave) ou bloquear a si mesmo completamente para manter o foco (Modo Rígido).
+
+POR QUE VOCÊ DEVE INSTALÁ-LO?
+Se você já abriu um site apenas para verificar uma coisa, e de repente percebeu que uma hora se passou em um transe de rolagem de tela—esta extensão é para você.
+
+Algoritmos modernos são projetados para sequestrar a sua atenção. Doomscroll Blocker devolve ela para você. Você deve instalar isso para:
+- Quebrar Maus Hábitos: Parar o ciclo automático de rolagem infinita quando você está entediado.
+- Recuperar o seu Tempo: Economizar horas de tempo de tela improdutivo perdido toda semana.
+- Melhorar o Bem-Estar Digital: Limitar a sua exposição diária a feeds sem fim de vídeos curtos.
+- Supercarregar a Produtividade: Usar o cronômetro rigoroso do "Modo Rígido" para bloquear sites de distração quando você precisa se concentrar desesperadamente no trabalho ou estudo.
+
+RECURSOS EM RESUMO
+- Contador de Scroll Inteligente: Defina um limite rigoroso de rolagem para sites baseados em linha do tempo.
+- Limitador de Deslize de Vídeos: Defina um limite exato de deslize para plataformas de vídeos curtos.
+- Modo Suave (Fricção Atenta): Pressione e segure por 3 segundos para ignorar a interrupção.
+- Modo Rígido (Modo Foco): Um bloqueio rigoroso e cronometrado para quando você precisa de foco profundo.
+- Cronômetros Personalizáveis: Escolha entre 5, 10, 15, 30, 60 minutos ou durações personalizadas.
+- Estatísticas ao Vivo: Acompanhe sua distância de rolagem e contagem de vídeos direto do menu da extensão.
+- 100% Privado: Todos os dados ficam totalmente locais no seu dispositivo. Sem rastreamento, sem servidores externos.
+
+Retome o controle da sua atenção. Instale o Doomscroll Blocker hoje mesmo e pare a rolagem infinita!
+
+
+===================================
+FRENCH (FR)
+===================================
+Doomscroll Blocker - Arrêtez de Scroller et Concentrez-vous
+
+QUE FAIT-IL ?
+Doomscroll Blocker est un outil de productivité intelligent et un bloqueur de sites web qui vous interrompt physiquement lorsque vous faites défiler depuis trop longtemps. Il suit la distance à laquelle vous faites défiler les fils d'actualités et le nombre de courtes vidéos que vous regardez. Lorsque vous atteignez votre limite personnelle, un blocage en plein écran recouvre instantanément votre fil d'actualité. Pour continuer, vous devez faire un choix conscient : soit faire une pause réfléchie (Mode Doux), soit vous bloquer complètement pour vous concentrer (Mode Strict).
+
+POURQUOI DEVRIEZ-VOUS L'INSTALLER ?
+Si vous avez déjà ouvert un site web juste pour vérifier une chose, et que vous avez soudainement réalisé qu'une heure s'était écoulée dans une transe de défilement—cette extension est pour vous.
+
+Les algorithmes modernes sont conçus pour détourner votre attention. Doomscroll Blocker vous la rend. Vous devriez l'installer pour :
+- Casser les Mauvaises Habitudes : Arrêter le cycle automatique de défilement infini lorsque vous vous ennuyez.
+- Récupérer votre Temps : Gagner des heures de temps d'écran perdu et improductif chaque semaine.
+- Améliorer le Bien-être Numérique : Limiter votre exposition quotidienne aux fils de vidéos courtes sans fin.
+- Booster la Productivité : Utiliser le compte à rebours rigoureux du "Mode Strict" pour bloquer les sites web distrayants lorsque vous avez désespérément besoin de vous concentrer sur votre travail ou vos études.
+
+APERÇU DES FONCTIONNALITÉS
+- Compteur de Scroll Intelligent : Définissez une limite stricte de défilement pour les sites web basés sur des fils d'actualités.
+- Limiteur de Swipes Vidéo : Définissez une limite précise de visionnage pour les plateformes de vidéos courtes.
+- Mode Doux (Friction Réfléchie) : Appuyez et maintenez pendant 3 secondes pour effacer l'interruption.
+- Mode Strict (Mode Concentration) : Un blocage strict et chronométré pour lorsque vous avez besoin d'une concentration profonde.
+- Minuteries Personnalisables : Choisissez entre 5, 10, 15, 30, 60 minutes ou des durées personnalisées.
+- Statistiques en Direct : Suivez votre distance de défilement et le nombre de vidéos directement depuis le menu de l'extension.
+- 100% Privé : Toutes les données restent totalement locales sur votre appareil. Pas de suivi, pas de serveurs externes.
+
+Reprenez le contrôle de votre attention. Installez Doomscroll Blocker dès aujourd'hui et arrêtez de scroller !
+
+
+===================================
+GERMAN (DE)
+===================================
+Doomscroll Blocker - Stoppen Sie das Scrollen & Fokussieren
+
+WAS MACHT ES?
+Doomscroll Blocker ist ein intelligentes Produktivitätswerkzeug und ein Website-Blocker, der Sie physisch unterbricht, wenn Sie zu lange gescrollt haben. Er verfolgt, wie weit Sie auf Timeline-Feeds scrollen und wie viele kurze Videos Sie ansehen. Wenn Sie Ihr persönliches Limit erreichen, bedeckt eine Vollbildsperre sofort Ihren Feed. Um fortzufahren, müssen Sie eine bewusste Entscheidung treffen: Entweder legen Sie eine achtsame Pause ein (Soft-Modus) oder Sie sperren sich komplett aus, um sich zu konzentrieren (Hard-Modus).
+
+WARUM SOLLTEN SIE ES INSTALLIEREN?
+Wenn Sie jemals eine Website geöffnet haben, nur um eine Sache zu überprüfen, und plötzlich feststellen, dass eine Stunde in einer Scroll-Trance vergangen ist - dann ist diese Erweiterung genau das Richtige für Sie.
+
+Moderne Algorithmen sind darauf ausgelegt, Ihre Aufmerksamkeit zu kapern. Doomscroll Blocker gibt sie Ihnen zurück. Sie sollten dies installieren, um:
+- Schlechte Gewohnheiten abzulegen: Stoppen Sie den automatischen Zyklus des endlosen Scrollens, wenn Sie gelangweilt sind.
+- Ihre Zeit zurückzugewinnen: Sparen Sie jede Woche Stunden an verlorener, unproduktiver Bildschirmzeit.
+- Digitales Wohlbefinden zu verbessern: Begrenzen Sie Ihre tägliche Belastung durch endlose Feeds mit kurzen Videos.
+- Die Produktivität zu steigern: Verwenden Sie den strengen Timer des "Hard-Modus", um ablenkende Websites zu blockieren, wenn Sie sich dringend auf die Arbeit oder das Lernen konzentrieren müssen.
+
+FUNKTIONEN IM ÜBERBLICK
+- Intelligenter Scroll-Zähler: Legen Sie ein striktes Scroll-Limit für Timeline-basierte Websites fest.
+- Video-Swipe-Limiter: Legen Sie ein genaues Swipe-Limit für Kurzvideoplattformen fest.
+- Soft-Modus (Achtsame Reibung): Drücken und halten Sie für 3 Sekunden, um die Unterbrechung aufzuheben.
+- Hard-Modus (Fokus-Modus): Eine strenge, zeitgesteuerte Sperre, wenn Sie tiefe Konzentration benötigen.
+- Anpassbare Timer: Wählen Sie zwischen 5, 10, 15, 30, 60 Minuten oder benutzerdefinierten Dauern.
+- Live-Statistiken: Verfolgen Sie Ihre Scroll-Distanz und Video-Anzahl direkt über das Erweiterungsmenü.
+- 100% Privat: Alle Daten bleiben vollständig lokal auf Ihrem Gerät. Kein Tracking, keine externen Server.
+
+Übernehmen Sie wieder die Kontrolle über Ihre Aufmerksamkeit. Installieren Sie Doomscroll Blocker noch heute und stoppen Sie das Scrollen!

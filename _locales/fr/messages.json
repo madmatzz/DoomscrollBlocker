@@ -1,0 +1,189 @@
+{
+  "appName": {
+    "message": "DoomScroll Blocker"
+  },
+  "appDesc": {
+    "message": "Limitez le défilement sans fin sur les réseaux sociaux et les vidéos courtes. Fixez des limites, soyez interrompu et prenez des pauses intentionnelles."
+  },
+  "logoSub": {
+    "message": "Extension de Conscience du Défilement"
+  },
+  "statusDisabled": {
+    "message": "Bloqueur désactivé"
+  },
+  "statusPausedMins": {
+    "message": "En pause — reste $MINS$m",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusPausedIndef": {
+    "message": "En pause — indéfinie"
+  },
+  "statusActive": {
+    "message": "Surveillance de votre défilement"
+  },
+  "statusInactive": {
+    "message": "Inactif sur cette page"
+  },
+  "statusLoading": {
+    "message": "Chargement…"
+  },
+  "thisSession": {
+    "message": "Cette session"
+  },
+  "pixelsScrolled": {
+    "message": "Pixels défilés"
+  },
+  "shortsWatched": {
+    "message": "Shorts regardés"
+  },
+  "unitPx": {
+    "message": " px"
+  },
+  "unitVideos": {
+    "message": " vidéos"
+  },
+  "sensitivity": {
+    "message": "Sensibilité"
+  },
+  "scrollTrigger": {
+    "message": "Limite de distance"
+  },
+  "shortsTrigger": {
+    "message": "Limite de YouTube Shorts"
+  },
+  "scrollDesc": {
+    "message": "Reddit, Fil Instagram, Facebook, LinkedIn…"
+  },
+  "shortsDesc": {
+    "message": "YouTube Shorts, TikTok, Instagram Reels, Vidéos X — chaque balayage = 1"
+  },
+  "interventionMode": {
+    "message": "Mode d'intervention"
+  },
+  "softFriction": {
+    "message": "Friction douce"
+  },
+  "badgeDefault": {
+    "message": "défaut"
+  },
+  "softDesc": {
+    "message": "Une fenêtre s'affiche avec la possibilité de \"Continuer quand même\"."
+  },
+  "hardBlock": {
+    "message": "Blocage strict"
+  },
+  "hardDesc": {
+    "message": "Une fenêtre s'affiche — aucun moyen de continuer. Prendre une pause est votre seule issue."
+  },
+  "takeABreak": {
+    "message": "Prendre une pause"
+  },
+  "breakActive": {
+    "message": "Pause active"
+  },
+  "resumeNow": {
+    "message": "Reprendre maintenant"
+  },
+  "setBreak": {
+    "message": "☕ Définir une pause"
+  },
+  "indefinite": {
+    "message": "Indéfinie"
+  },
+  "customMinsPlaceholder": {
+    "message": "Minutes…"
+  },
+  "startBreak": {
+    "message": "Lancer Pause"
+  },
+  "monitoredSites": {
+    "message": "Sites surveillés"
+  },
+  "badgeFeed": {
+    "message": "Fil"
+  },
+  "badgeShorts": {
+    "message": "Shorts"
+  },
+  "btnAdd": {
+    "message": "Ajouter"
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "save": {
+    "message": "✓ sauver"
+  },
+  "footerText": {
+    "message": "v1.1.1 · Bloqueur de réseaux sociaux"
+  },
+  "footerPrivacy": {
+    "message": "Toutes les données sont locales · Aucun suivi"
+  },
+  "resetScroll": {
+    "message": "↺ Réinitialiser"
+  },
+  "resetDone": {
+    "message": "✓ Fait!"
+  },
+  "doomscrolling": {
+    "message": "doomscrolling"
+  },
+  "doomscrollingDetected": {
+    "message": "doomscrolling détecté"
+  },
+  "keepWastingLife": {
+    "message": "continuer à perdre mon temps"
+  },
+  "pressToContinue": {
+    "message": "appuyez pendant 3 secondes pour continuer"
+  },
+  "algorithmWins": {
+    "message": "L'ALGORITHME GAGNE ENCORE"
+  },
+  "paused": {
+    "message": "en pause"
+  },
+  "break": {
+    "message": "pause"
+  },
+  "deserveFreeTime": {
+    "message": "Je mérite un peu de temps libre"
+  },
+  "blockerSleep": {
+    "message": "Le bloqueur dormira pendant ce temps.<br>Faites défiler librement, sans interruptions."
+  },
+  "howLongNeed": {
+    "message": "de combien de temps avez-vous besoin?"
+  },
+  "enjoyBreak": {
+    "message": "profitez de la pause ✓"
+  },
+  "dialogCancel": {
+    "message": "annuler"
+  },
+  "breakTimerDialog": {
+    "message": "La pause se termine dans $MINS$ min",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "timerActiveIndef": {
+    "message": "Pause active — indéfinie"
+  },
+  "unitMin": {
+    "message": "min"
+  },
+  "unitH": {
+    "message": "h"
+  },
+  "unitM": {
+    "message": "m"
+  }
+}

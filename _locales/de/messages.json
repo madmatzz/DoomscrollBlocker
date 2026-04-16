@@ -1,0 +1,189 @@
+{
+  "appName": {
+    "message": "DoomScroll Blocker"
+  },
+  "appDesc": {
+    "message": "Beschränken Sie endloses Scrollen in sozialen Medien und kurzen Videos. Setzen Sie Limits, lassen Sie sich unterbrechen und machen Sie bewusste Pausen."
+  },
+  "logoSub": {
+    "message": "Scroll-Bewusstseins-Erweiterung"
+  },
+  "statusDisabled": {
+    "message": "Blocker deaktiviert"
+  },
+  "statusPausedMins": {
+    "message": "Pause — noch $MINS$m",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusPausedIndef": {
+    "message": "Pause — unbegrenzt"
+  },
+  "statusActive": {
+    "message": "Scrollen wird überwacht"
+  },
+  "statusInactive": {
+    "message": "Auf dieser Seite inaktiv"
+  },
+  "statusLoading": {
+    "message": "Wird geladen…"
+  },
+  "thisSession": {
+    "message": "Diese Sitzung"
+  },
+  "pixelsScrolled": {
+    "message": "Gespushte Pixel"
+  },
+  "shortsWatched": {
+    "message": "Gesehene Shorts"
+  },
+  "unitPx": {
+    "message": " px"
+  },
+  "unitVideos": {
+    "message": " Videos"
+  },
+  "sensitivity": {
+    "message": "Empfindlichkeit"
+  },
+  "scrollTrigger": {
+    "message": "Auslöser Scroll-Distanz"
+  },
+  "shortsTrigger": {
+    "message": "YouTube Shorts Limit"
+  },
+  "scrollDesc": {
+    "message": "Reddit, Instagram Feed, Facebook, LinkedIn…"
+  },
+  "shortsDesc": {
+    "message": "YouTube Shorts, TikTok, Instagram Reels, X Videos — jeder Wisch = 1"
+  },
+  "interventionMode": {
+    "message": "Interventionsmodus"
+  },
+  "softFriction": {
+    "message": "Sanfte Reibung"
+  },
+  "badgeDefault": {
+    "message": "Standard"
+  },
+  "softDesc": {
+    "message": "Popup erscheint mit der Option \"Trotzdem weiter\"."
+  },
+  "hardBlock": {
+    "message": "Harter Block"
+  },
+  "hardDesc": {
+    "message": "Popup erscheint — keine Möglichkeit, weiterzuscrollen. Eine Pause zu machen ist Ihr einziger Ausweg."
+  },
+  "takeABreak": {
+    "message": "Mache eine Pause"
+  },
+  "breakActive": {
+    "message": "Pause aktiv"
+  },
+  "resumeNow": {
+    "message": "Jetzt fortsetzen"
+  },
+  "setBreak": {
+    "message": "☕ Pause einstellen"
+  },
+  "indefinite": {
+    "message": "Unbegrenzt"
+  },
+  "customMinsPlaceholder": {
+    "message": "Benutzerdefiniert…"
+  },
+  "startBreak": {
+    "message": "Pause starten"
+  },
+  "monitoredSites": {
+    "message": "Überwachte Seiten"
+  },
+  "badgeFeed": {
+    "message": "Feed"
+  },
+  "badgeShorts": {
+    "message": "Shorts"
+  },
+  "btnAdd": {
+    "message": "Hinzufügen"
+  },
+  "cancel": {
+    "message": "Abbrechen"
+  },
+  "save": {
+    "message": "✓ speichern"
+  },
+  "footerText": {
+    "message": "v1.1.1 · Social Media Blocker"
+  },
+  "footerPrivacy": {
+    "message": "Daten bleiben lokal · Kein Tracking"
+  },
+  "resetScroll": {
+    "message": "↺ Scroll zurücksetzen"
+  },
+  "resetDone": {
+    "message": "✓ Zurückgesetzt!"
+  },
+  "doomscrolling": {
+    "message": "doomscrolling"
+  },
+  "doomscrollingDetected": {
+    "message": "doomscrolling erkannt"
+  },
+  "keepWastingLife": {
+    "message": "weiter mein leben verschwenden"
+  },
+  "pressToContinue": {
+    "message": "3 sekunden lang drücken, um fortzufahren"
+  },
+  "algorithmWins": {
+    "message": "DER ALGORITHMUS GEWINNT WIEDER"
+  },
+  "paused": {
+    "message": "pausiert"
+  },
+  "break": {
+    "message": "pause"
+  },
+  "deserveFreeTime": {
+    "message": "Ich verdiene etwas Freizeit"
+  },
+  "blockerSleep": {
+    "message": "Der Blocker schläft so lange.<br>Scrollen Sie frei, ohne Unterbrechungen."
+  },
+  "howLongNeed": {
+    "message": "wie lange brauchst du?"
+  },
+  "enjoyBreak": {
+    "message": "genieße die Pause ✓"
+  },
+  "dialogCancel": {
+    "message": "abbrechen"
+  },
+  "breakTimerDialog": {
+    "message": "Pause endet in $MINS$ min",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "timerActiveIndef": {
+    "message": "Pause aktiv — unbegrenzt"
+  },
+  "unitMin": {
+    "message": "min"
+  },
+  "unitH": {
+    "message": "h"
+  },
+  "unitM": {
+    "message": "m"
+  }
+}

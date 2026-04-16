@@ -1,8 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Doomscroll Blocker",
-  "version": "1.0.0",
-  "description": "Limit mindless scrolling on social media feeds and short videos. Set scroll limits, get interrupted, and take intentional breaks.",
+  "name": "__MSG_appName__",
+  "version": "1.1.1",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
   "permissions": [
     "storage",
     "alarms",

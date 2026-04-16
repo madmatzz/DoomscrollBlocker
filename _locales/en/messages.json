@@ -1,0 +1,189 @@
+{
+  "appName": {
+    "message": "DoomScroll Blocker"
+  },
+  "appDesc": {
+    "message": "Limit mindless scrolling on social media feeds and short videos. Set scroll limits, get interrupted, and take intentional breaks."
+  },
+  "logoSub": {
+    "message": "Scroll Awareness Extension"
+  },
+  "statusDisabled": {
+    "message": "Blocker disabled"
+  },
+  "statusPausedMins": {
+    "message": "On break — $MINS$m left",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "statusPausedIndef": {
+    "message": "On break — indefinite"
+  },
+  "statusActive": {
+    "message": "Monitoring your scroll"
+  },
+  "statusInactive": {
+    "message": "Not active on this page"
+  },
+  "statusLoading": {
+    "message": "Loading…"
+  },
+  "thisSession": {
+    "message": "This session"
+  },
+  "pixelsScrolled": {
+    "message": "Pixels scrolled"
+  },
+  "shortsWatched": {
+    "message": "Shorts watched"
+  },
+  "unitPx": {
+    "message": " px"
+  },
+  "unitVideos": {
+    "message": " videos"
+  },
+  "sensitivity": {
+    "message": "Sensitivity"
+  },
+  "scrollTrigger": {
+    "message": "Scroll distance trigger"
+  },
+  "shortsTrigger": {
+    "message": "YouTube Shorts trigger"
+  },
+  "scrollDesc": {
+    "message": "Reddit, Instagram feed, Facebook, LinkedIn…"
+  },
+  "shortsDesc": {
+    "message": "YouTube Shorts, TikTok, Instagram Reels, X Videos — each swipe = 1"
+  },
+  "interventionMode": {
+    "message": "Intervention mode"
+  },
+  "softFriction": {
+    "message": "Soft friction"
+  },
+  "badgeDefault": {
+    "message": "default"
+  },
+  "softDesc": {
+    "message": "Popup appears with a \"Continue anyway\" option."
+  },
+  "hardBlock": {
+    "message": "Hard block"
+  },
+  "hardDesc": {
+    "message": "Popup appears — no way to continue scrolling. Taking a break is your only escape."
+  },
+  "takeABreak": {
+    "message": "Take a break"
+  },
+  "breakActive": {
+    "message": "Break active"
+  },
+  "resumeNow": {
+    "message": "Resume now"
+  },
+  "setBreak": {
+    "message": "☕ Set a break"
+  },
+  "indefinite": {
+    "message": "Indefinite"
+  },
+  "customMinsPlaceholder": {
+    "message": "Custom mins…"
+  },
+  "startBreak": {
+    "message": "Start Break"
+  },
+  "monitoredSites": {
+    "message": "Monitored sites"
+  },
+  "badgeFeed": {
+    "message": "Feed"
+  },
+  "badgeShorts": {
+    "message": "Shorts"
+  },
+  "btnAdd": {
+    "message": "Add"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "save": {
+    "message": "✓ save"
+  },
+  "footerText": {
+    "message": "v1.1.1 · Social media blocker"
+  },
+  "footerPrivacy": {
+    "message": "All data stays local · No tracking"
+  },
+  "resetScroll": {
+    "message": "↺ Reset scroll"
+  },
+  "resetDone": {
+    "message": "✓ Reset!"
+  },
+  "doomscrolling": {
+    "message": "doomscrolling"
+  },
+  "doomscrollingDetected": {
+    "message": "doomscrolling detected"
+  },
+  "keepWastingLife": {
+    "message": "keep wasting my life"
+  },
+  "pressToContinue": {
+    "message": "press for 3 seconds to continue"
+  },
+  "algorithmWins": {
+    "message": "THE ALGORITHM WINS AGAIN"
+  },
+  "paused": {
+    "message": "paused"
+  },
+  "break": {
+    "message": "break"
+  },
+  "deserveFreeTime": {
+    "message": "I deserve some free time"
+  },
+  "blockerSleep": {
+    "message": "The blocker will sleep for this long.<br>Scroll freely, no interruptions."
+  },
+  "howLongNeed": {
+    "message": "how long do you need?"
+  },
+  "enjoyBreak": {
+    "message": "enjoy the break ✓"
+  },
+  "dialogCancel": {
+    "message": "cancel"
+  },
+  "breakTimerDialog": {
+    "message": "Break ends in $MINS$ min",
+    "placeholders": {
+      "mins": {
+        "content": "$1"
+      }
+    }
+  },
+  "timerActiveIndef": {
+    "message": "Break active — indefinite"
+  },
+  "unitMin": {
+    "message": "min"
+  },
+  "unitH": {
+    "message": "h"
+  },
+  "unitM": {
+    "message": "m"
+  }
+}

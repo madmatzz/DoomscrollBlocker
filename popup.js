@@ -1,7 +1,47 @@
-// popup.js — DoomScroll Blocker
-
-(function () {
+(async function () {
   'use strict';
+
+  let customDict = null;
+  try {
+    const { customLang } = await chrome.storage.sync.get('customLang');
+    const lang = customLang || 'auto';
+    const langSelect = document.getElementById('langSelect');
+    if (langSelect) langSelect.value = lang;
+
+    if (lang !== 'auto') {
+      const resp = await chrome.runtime.sendMessage({ type: 'GET_LOCALE_STRINGS', lang });
+      if (resp && resp.ok) customDict = resp.data;
+    }
+  } catch (e) {
+    console.error('[DoomScroll popup] failed to init i18n:', e);
+  }
+
+  function msg(key, subs = []) {
+    let str = (customDict && customDict[key]) ? customDict[key].message : (chrome.i18n.getMessage(key) || key);
+    if (subs.length && str) {
+      str = str.replace(/\$[A-Z]+\$/g, '$1');
+      subs.forEach((val, i) => str = str.replace(new RegExp(`\\$${i + 1}`, 'g'), val));
+    }
+    return str;
+  }
+
+  // ── Apply i18n ──
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const m = msg(key);
+    if (!m) return;
+    if (el.tagName === 'INPUT' && el.type !== 'button') el.placeholder = m;
+    else el.innerHTML = m;
+  });
+
+  const langSelect = document.getElementById('langSelect');
+  if (langSelect) {
+    langSelect.addEventListener('change', () => {
+      chrome.storage.sync.set({ customLang: langSelect.value }, () => {
+        window.location.reload();
+      });
+    });
+  }
 
   const enableToggle = document.getElementById('enableToggle');
   const statusBadge = document.getElementById('statusBadge');
@@ -49,20 +89,20 @@
         const pauseUntil = data.pauseUntil;
 
         if (!data.enabled) {
-          setStatus('disabled', 'Blocker disabled'); hideTimer();
+          setStatus('disabled', msg('statusDisabled')); hideTimer();
         } else if (breakUntil && now < breakUntil) {
           // Break set from either popup — show time remaining
           const r = Math.ceil((breakUntil - now) / 60000);
-          setStatus('paused', `On break — ${r}m left`);
-          showTimer(`Break ends in ${r} min`, resume);
+          setStatus('paused', msg('statusPausedMins', [r.toString()]));
+          showTimer(msg('breakTimerDialog', [r.toString()]), resume);
         } else if (isPaused && pauseUntil && now < pauseUntil) {
           // Legacy pauseUntil — treat same as break
           const r = Math.ceil((pauseUntil - now) / 60000);
-          setStatus('paused', `On break — ${r}m left`);
-          showTimer(`Break ends in ${r} min`, resume);
+          setStatus('paused', msg('statusPausedMins', [r.toString()]));
+          showTimer(msg('breakTimerDialog', [r.toString()]), resume);
         } else if (isPaused) {
-          setStatus('paused', 'On break — indefinite');
-          showTimer('Break active — indefinite', resume);
+          setStatus('paused', msg('statusPausedIndef'));
+          showTimer(msg('timerActiveIndef'), resume);
         } else {
           // Probe the content script — if it responds, the page is being monitored
           chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -70,11 +110,16 @@
               setStatus('inactive', 'Not active on this page'); hideTimer();
               return;
             }
+            // Catch error if content script not loaded
+            if (tabs[0].url && tabs[0].url.startsWith('chrome://')) {
+              setStatus('inactive', msg('statusInactive'));
+              return;
+            }
             chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_STATS' }, (resp) => {
               if (chrome.runtime.lastError || !resp) {
-                setStatus('inactive', 'Not active on this page');
+                setStatus('inactive', msg('statusInactive'));
               } else {
-                setStatus('active', 'Monitoring your scroll');
+                setStatus('active', msg('statusActive'));
               }
               hideTimer();
             });
@@ -104,8 +149,8 @@
   }
 
   function updateSliderDisplays() {
-    threshVal.textContent = Number(threshSlider.value).toLocaleString() + ' px';
-    shortsVal.textContent = shortsSlider.value + ' short' + (shortsSlider.value == 1 ? '' : 's');
+    threshVal.textContent = Number(threshSlider.value).toLocaleString() + msg('unitPx');
+    shortsVal.textContent = shortsSlider.value + msg('unitVideos');
   }
 
   threshSlider.addEventListener('input', () => {
@@ -169,8 +214,8 @@
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]) chrome.tabs.sendMessage(tabs[0].id, { type: 'RESET_SCROLL' }).catch(() => { });
     });
-    resetBtn.textContent = '✓ Reset!';
-    setTimeout(() => { resetBtn.textContent = '↺ Reset scroll'; }, 1500);
+    resetBtn.textContent = msg('resetDone');
+    setTimeout(() => { resetBtn.textContent = msg('resetScroll'); }, 1500);
   });
 
   function notifyContent() {
@@ -188,7 +233,7 @@
   if (cooldownSlider) {
     cooldownSlider.addEventListener('input', () => {
       const mins = parseInt(cooldownSlider.value);
-      if (cooldownVal) cooldownVal.textContent = mins + ' min';
+      if (cooldownVal) cooldownVal.textContent = mins + ' ' + msg('unitMin');
       chrome.storage.sync.set({ lockdownSeconds: mins * 60 });
       notifyContent();
     });
@@ -210,10 +255,10 @@
   function updateStatDisplay(px, shorts, pxThreshold, shortsThreshold) {
     if (statPx) {
       const val = px >= 1000 ? (px / 1000).toFixed(1) + 'k' : String(px);
-      statPx.innerHTML = val + '<span> px</span>';
+      statPx.innerHTML = val + '<span>' + msg('unitPx') + '</span>';
     }
     if (statShorts) {
-      statShorts.innerHTML = shorts + '<span> videos</span>';
+      statShorts.innerHTML = shorts + '<span>' + msg('unitVideos') + '</span>';
     }
 
     // Bar: colour shifts safe → warn → danger based on % of threshold
@@ -242,8 +287,8 @@
       chrome.tabs.sendMessage(tabs[0].id, { type: 'GET_STATS' }, (resp) => {
         if (chrome.runtime.lastError || !resp) {
           // Tab not tracked (e.g. chrome:// page) — show dashes
-          if (statPx) statPx.innerHTML = '—<span> px</span>';
-          if (statShorts) statShorts.innerHTML = '—<span> videos</span>';
+          if (statPx) statPx.innerHTML = '—<span>' + msg('unitPx') + '</span>';
+          if (statShorts) statShorts.innerHTML = '—<span>' + msg('unitVideos') + '</span>';
           return;
         }
         updateStatDisplay(resp.totalScrolled || 0, resp.swipeCount || 0, resp.scrollThreshold, resp.shortsThreshold);
@@ -319,7 +364,7 @@
       const types = (site.types || [site.type || 'feed']).slice().sort((a, b) => a === 'feed' ? -1 : 1);
       const row = document.createElement('div');
       row.className = 'site-row';
-      const badges = types.map(t => `<span class="type-badge ${t}">${t}</span>`).join('');
+      const badges = types.map(t => `<span class="type-badge ${t}">${t === 'feed' ? msg('badgeFeed') : msg('badgeShorts')}</span>`).join('');
       row.innerHTML = `
         <span class="site-row-name">${site.host}</span>
         <span style="display:flex;gap:3px;flex-shrink:0;">${badges}</span>
@@ -340,11 +385,11 @@
             <input class="site-edit-input" value="${sites[i].host}" style="width:100%;background:#111;border:1px solid rgba(255,45,45,0.3);border-radius:3px;outline:none;color:var(--red);font-family:var(--mono);font-size:11px;padding:5px 8px;" />
             <div style="display:flex;align-items:center;gap:6px;">
               <div class="type-toggle edit-type-toggle" style="flex:1;">
-                <button class="type-btn ${editTypes.has('feed') ? 'selected' : ''}" data-type="feed" style="flex:1;">Feed</button>
-                <button class="type-btn ${editTypes.has('shorts') ? 'selected' : ''}" data-type="shorts" style="flex:1;">Shorts</button>
+                <button class="type-btn ${editTypes.has('feed') ? 'selected' : ''}" data-type="feed" style="flex:1;">${msg('badgeFeed')}</button>
+                <button class="type-btn ${editTypes.has('shorts') ? 'selected' : ''}" data-type="shorts" style="flex:1;">${msg('badgeShorts')}</button>
               </div>
-              <button class="site-row-btn save-btn" title="Save" style="color:#4ade80;">✓ save</button>
-              <button class="site-row-btn cancel-btn" title="Cancel">✕</button>
+              <button class="site-row-btn save-btn" title="Save" style="color:#4ade80;">${msg('save')}</button>
+              <button class="site-row-btn cancel-btn" title="Cancel">${msg('cancel')}</button>
             </div>
           </div>
         `;

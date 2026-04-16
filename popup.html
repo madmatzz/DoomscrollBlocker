@@ -774,8 +774,8 @@
   <div class="header">
     <div class="logo-row">
       <div>
-        <div class="logo-text">DoomScroll Blocker</div>
-        <div class="logo-sub">Scroll Awareness Extension</div>
+        <div class="logo-text" data-i18n="appName">DoomScroll Blocker</div>
+        <div class="logo-sub" data-i18n="logoSub">Scroll Awareness Extension</div>
       </div>
       <label class="toggle" title="Enable / Disable">
         <input type="checkbox" id="enableToggle" checked />
@@ -785,24 +785,24 @@
     </div>
     <div class="status-badge" id="statusBadge">
       <div class="status-dot"></div>
-      <span id="statusText">Loading…</span>
+      <span id="statusText" data-i18n="statusLoading">Loading…</span>
     </div>
   </div>
 
   <!-- Session stats -->
   <div class="section">
-    <div class="section-title">This session</div>
+    <div class="section-title" data-i18n="thisSession">This session</div>
     <div class="stats-grid">
       <div class="stat-box">
-        <div class="stat-label">Pixels scrolled</div>
-        <div class="stat-value" id="statPx">—<span> px</span></div>
+        <div class="stat-label" data-i18n="pixelsScrolled">Pixels scrolled</div>
+        <div class="stat-value" id="statPx">—<span data-i18n="unitPx"> px</span></div>
         <div class="stat-bar-wrap">
           <div class="stat-bar-fill safe" id="statPxBar" style="width:0%"></div>
         </div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Shorts watched</div>
-        <div class="stat-value" id="statShorts">—<span> videos</span></div>
+        <div class="stat-label" data-i18n="shortsWatched">Shorts watched</div>
+        <div class="stat-value" id="statShorts">—<span data-i18n="unitVideos"> videos</span></div>
         <div class="stat-bar-wrap">
           <div class="stat-bar-fill safe" id="statShortsBar" style="width:0%"></div>
         </div>
@@ -812,64 +812,41 @@
 
   <!-- Scroll sensitivity -->
   <div class="section">
-    <div class="section-title">Sensitivity</div>
+    <div class="section-title" data-i18n="sensitivity">Sensitivity</div>
 
     <div class="slider-row">
       <div class="slider-top">
-        <span class="slider-name">Scroll distance trigger</span>
+        <span class="slider-name" data-i18n="scrollTrigger">Scroll distance trigger</span>
         <span class="slider-val" id="threshVal">10,000 px</span>
       </div>
       <input type="range" id="threshSlider" min="500" max="20000" step="500" value="10000" />
-      <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;">Reddit, Instagram feed,
-        Facebook, LinkedIn…</div>
+      <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;" data-i18n="scrollDesc">Reddit, Instagram feed, Facebook, LinkedIn…</div>
     </div>
 
     <div class="slider-row" style="margin-top:14px;">
       <div class="slider-top">
-        <span class="slider-name">YouTube Shorts trigger</span>
+        <span class="slider-name" data-i18n="shortsTrigger">YouTube Shorts trigger</span>
         <span class="slider-val" id="shortsVal">5 shorts</span>
       </div>
       <input type="range" id="shortsSlider" min="1" max="30" step="1" value="5" />
-      <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;">YouTube Shorts, TikTok,
-        Instagram Reels, X Videos — each swipe = 1</div>
+      <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;" data-i18n="shortsDesc">YouTube Shorts, TikTok, Instagram Reels, X Videos — each swipe = 1</div>
     </div>
   </div>
 
-
-  <!-- Intervention mode -->
-  <div class="section">
-    <div class="section-title">Intervention mode</div>
-
-    <div class="mode-row" id="modeSoft">
-      <div class="mode-radio" id="modeSoftRadio"></div>
-      <div class="mode-body">
-        <div class="mode-label">Soft friction <span class="mode-badge">default</span></div>
-        <div class="mode-desc">Popup appears with a "Continue anyway" option.</div>
-      </div>
-    </div>
-
-    <div class="mode-row" id="modeStrict" style="margin-top:10px;">
-      <div class="mode-radio" id="modeStrictRadio"></div>
-      <div class="mode-body">
-        <div class="mode-label">Hard block</div>
-        <div class="mode-desc">Popup appears — no way to continue scrolling. Taking a break is your only escape.</div>
-      </div>
-    </div>
-  </div>
 
   <!-- Break / Pause -->
   <div class="section">
-    <div class="section-title">Take a break</div>
+    <div class="section-title" data-i18n="takeABreak">Take a break</div>
 
     <!-- Active timer display -->
     <div class="timer-active" id="timerActive">
-      <span class="timer-text" id="timerText">Break active</span>
-      <button class="timer-cancel" id="timerCancel">Resume now</button>
+      <span class="timer-text" id="timerText" data-i18n="breakActive">Break active</span>
+      <button class="timer-cancel" id="timerCancel" data-i18n="resumeNow">Resume now</button>
     </div>
 
     <!-- Break button -->
     <div class="btn-row" id="breakBtns">
-      <button class="action-btn danger" style="flex:1" id="breakBtn">☕ Set a break</button>
+      <button class="action-btn danger" style="flex:1" id="breakBtn" data-i18n="setBreak">☕ Set a break</button>
     </div>
 
     <!-- Break duration picker -->
@@ -880,11 +857,32 @@
         <button class="preset-pill" data-mins="15">15m</button>
         <button class="preset-pill" data-mins="30">30m</button>
         <button class="preset-pill" data-mins="60">1h</button>
-        <button class="preset-pill" data-mins="0">Indefinite</button>
+        <button class="preset-pill" data-mins="0" data-i18n="indefinite">Indefinite</button>
       </div>
       <div class="custom-row">
-        <input type="number" class="custom-input" id="breakCustom" placeholder="Custom mins…" min="1" max="480" />
-        <button class="confirm-btn" id="breakConfirm">Start Break</button>
+        <input type="number" class="custom-input" id="breakCustom" placeholder="Custom mins…" data-i18n="customMinsPlaceholder" min="1" max="480" />
+        <button class="confirm-btn" id="breakConfirm" data-i18n="startBreak">Start Break</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Intervention mode -->
+  <div class="section">
+    <div class="section-title" data-i18n="interventionMode">Intervention mode</div>
+
+    <div class="mode-row" id="modeSoft">
+      <div class="mode-radio" id="modeSoftRadio"></div>
+      <div class="mode-body">
+        <div class="mode-label"><span data-i18n="softFriction">Soft friction</span> <span class="mode-badge" data-i18n="badgeDefault">default</span></div>
+        <div class="mode-desc" data-i18n="softDesc">Popup appears with a "Continue anyway" option.</div>
+      </div>
+    </div>
+
+    <div class="mode-row" id="modeStrict" style="margin-top:10px;">
+      <div class="mode-radio" id="modeStrictRadio"></div>
+      <div class="mode-body">
+        <div class="mode-label" data-i18n="hardBlock">Hard block</div>
+        <div class="mode-desc" data-i18n="hardDesc">Popup appears — no way to continue scrolling. Taking a break is your only escape.</div>
       </div>
     </div>
   </div>
@@ -892,7 +890,7 @@
   <!-- Monitored Sites -->
   <div class="section" id="sitesSection">
     <div class="section-title sites-toggle-header" id="sitesToggleHeader">
-      Monitored sites
+      <span data-i18n="monitoredSites">Monitored sites</span>
       <span id="sitesChevron" style="margin-left:auto;font-size:9px;opacity:0.5;transition:transform 0.2s;">▶</span>
     </div>
     <div id="sitesBody" style="display:none;margin-top:10px;">
@@ -902,10 +900,10 @@
           style="width:100%;font-size:11px;padding:6px 10px;box-sizing:border-box;" />
         <div style="display:flex;gap:6px;">
           <div class="type-toggle" id="addTypeToggle" style="flex:1;">
-            <button class="type-btn selected" data-type="feed" style="flex:1;">Feed</button>
-            <button class="type-btn" data-type="shorts" style="flex:1;">Shorts</button>
+            <button class="type-btn selected" data-type="feed" style="flex:1;" data-i18n="badgeFeed">Feed</button>
+            <button class="type-btn" data-type="shorts" style="flex:1;" data-i18n="badgeShorts">Shorts</button>
           </div>
-          <button class="confirm-btn" id="siteAddBtn" style="font-size:10px;padding:6px 14px;">Add</button>
+          <button class="confirm-btn" id="siteAddBtn" style="font-size:10px;padding:6px 14px;" data-i18n="btnAdd">Add</button>
         </div>
       </div>
     </div>
@@ -913,10 +911,19 @@
 
   <!-- Footer -->
   <div class="footer">
-    <span class="footer-text">v1.0 · Social media blocker</span>
+    <span class="footer-text" data-i18n="footerText">v1.1.1 · Social media blocker</span>
     <div style="display:flex;gap:10px;align-items:center;">
-      <span style="font-size:9px;color:#333;letter-spacing:0.08em;text-transform:uppercase;">All data stays local · No tracking</span>
-      <button class="reset-all" id="resetBtn">↺ Reset scroll</button>
+      <select id="langSelect" style="background:transparent;border:none;color:#333;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;outline:none;cursor:pointer;appearance:none;padding-right:10px;">
+        <option value="auto">Auto (Browser)</option>
+        <option value="en">English (EN)</option>
+        <option value="es">Español (ES)</option>
+        <option value="pt_BR">Português (BR)</option>
+        <option value="de">Deutsch (DE)</option>
+        <option value="fr">Français (FR)</option>
+      </select>
+      <span style="font-size:9px;color:#333;letter-spacing:0.08em;text-transform:uppercase;pointer-events:none;margin-left:-8px;">▼</span>
+      <span style="font-size:9px;color:#333;letter-spacing:0.08em;text-transform:uppercase;" data-i18n="footerPrivacy">All data stays local · No tracking</span>
+      <button class="reset-all" id="resetBtn" data-i18n="resetScroll">↺ Reset scroll</button>
     </div>
   </div>
 
