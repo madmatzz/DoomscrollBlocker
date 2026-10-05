@@ -6,8 +6,8 @@ const DEFAULT_HOSTS = [
   'tiktok.com', 'x.com', 'reddit.com', 'threads.net',
 ];
 
-chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.sync.set({
+chrome.runtime.onInstalled.addListener((details) => {
+  const defaults = {
     enabled: true,
     paused: false,
     pauseUntil: null,
@@ -25,6 +25,14 @@ chrome.runtime.onInstalled.addListener(() => {
       { host: 'reddit.com',    types: ['feed']           },
       { host: 'threads.net',   types: ['feed']           },
     ],
+  };
+  // Only set defaults for keys that don't already exist (preserve user settings on update)
+  chrome.storage.sync.get(Object.keys(defaults), (existing) => {
+    const toSet = {};
+    for (const [k, v] of Object.entries(defaults)) {
+      if (existing[k] === undefined) toSet[k] = v;
+    }
+    if (Object.keys(toSet).length) chrome.storage.sync.set(toSet);
   });
   // Register dynamic scripts for any custom sites carried over from previous version
   registerCustomSiteScripts();

@@ -369,7 +369,16 @@
       cancelFriction(); setOverlay(0); hideLabel(); hideActionBar(); counter.classList.remove('visible');
       return;
     }
-    if (mode === 'shorts') return;
+    if (mode === 'shorts') {
+      const threshold = settings.shortsThreshold || 5;
+      updateCounter(swipeCount > threshold * 0.5);
+      if (swipeCount >= threshold) {
+        if (!frictionActive) triggerFriction();
+      } else {
+        cancelFriction(); setOverlay(0); hideLabel(); hideActionBar();
+      }
+      return;
+    }
 
     const currentY = window.scrollY;
     if (currentY > maxScrollY) {
@@ -664,8 +673,25 @@
       settings.paused = false; settings.breakUntil = null; settings.pauseUntil = null;
       hidePausedState();
     }
-    if (msg.type === 'SETTINGS_UPDATED') loadSettings(() => { update(); });
+    if (msg.type === 'SETTINGS_UPDATED') {
+      if (msg.settings) {
+        settings = { ...settings, ...msg.settings };
+        update();
+      } else {
+        loadSettings(() => { update(); });
+      }
+    }
     if (msg.type === 'RESET_SCROLL') resetScroll();
+  });
+
+  // ─── Auto-reload on storage changes (covers all tabs, not just active) ──────
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== 'sync') return;
+    const keys = ['scrollThreshold', 'shortsThreshold', 'enabled', 'paused',
+                  'breakUntil', 'pauseUntil', 'strictMode', 'lockdownSeconds', 'trackedSites'];
+    if (keys.some(k => k in changes)) {
+      loadSettings(() => { update(); });
+    }
   });
 
   // ─── Init ────────────────────────────────────────────────────────────────────

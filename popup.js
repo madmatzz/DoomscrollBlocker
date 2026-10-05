@@ -48,8 +48,9 @@
   const statusText = document.getElementById('statusText');
   const threshSlider = document.getElementById('threshSlider');
   const shortsSlider = document.getElementById('shortsSlider');
-  const threshVal = document.getElementById('threshVal');
-  const shortsVal = document.getElementById('shortsVal');
+
+  const threshInput = document.getElementById('threshInput');
+  const shortsInput = document.getElementById('shortsInput');
   const breakBtn = document.getElementById('breakBtn');
   const breakPicker = document.getElementById('breakPicker');
   const breakConfirm = document.getElementById('breakConfirm');
@@ -70,14 +71,37 @@
 
   let breakSelectedMins = 10;
 
+  function updateThreshDisplay(val) {
+    if (!threshInput) return;
+    threshInput.value = Number(val).toLocaleString();
+    threshInput.style.width = Math.max(2, threshInput.value.length) + 'ch';
+  }
+
+  function updateShortsDisplay(val) {
+    if (!shortsInput) return;
+    shortsInput.value = Number(val).toLocaleString();
+    shortsInput.style.width = Math.max(1, shortsInput.value.length) + 'ch';
+  }
+
   function loadState() {
     chrome.storage.sync.get(
-      ['enabled', 'paused', 'breakUntil', 'pauseUntil', 'scrollThreshold', 'shortsThreshold', 'strictMode', 'lockdownSeconds'],
+      ['enabled', 'paused', 'breakUntil', 'pauseUntil', 'scrollThreshold', 'shortsThreshold', 'strictMode', 'lockdownSeconds', 'scrollMaxThreshold', 'shortsMaxThreshold'],
       (data) => {
         enableToggle.checked = data.enabled !== false;
-        threshSlider.value = data.scrollThreshold || 10000;
-        shortsSlider.value = data.shortsThreshold || 5;
-        updateSliderDisplays();
+
+        const scrollThreshold = data.scrollThreshold || 10000;
+        const shortsThreshold = data.shortsThreshold || 5;
+        const scrollMax = Math.max(data.scrollMaxThreshold || 20000, scrollThreshold);
+        const shortsMax = Math.max(data.shortsMaxThreshold || 30, shortsThreshold);
+
+        threshSlider.max = scrollMax;
+        shortsSlider.max = shortsMax;
+        threshSlider.value = scrollThreshold;
+        shortsSlider.value = shortsThreshold;
+
+        updateThreshDisplay(scrollThreshold);
+        updateShortsDisplay(shortsThreshold);
+
         renderMode(data.strictMode === true);
         const mins = Math.round((data.lockdownSeconds || 30) / 60);
         if (cooldownSlider) cooldownSlider.value = Math.max(1, mins);
@@ -148,23 +172,83 @@
     breakBtns.style.display = 'flex';
   }
 
-  function updateSliderDisplays() {
-    threshVal.textContent = Number(threshSlider.value).toLocaleString() + msg('unitPx');
-    shortsVal.textContent = shortsSlider.value + msg('unitVideos');
-  }
-
   threshSlider.addEventListener('input', () => {
-    updateSliderDisplays(); saveSettings(); notifyContent();
+    const val = parseInt(threshSlider.value, 10);
+    updateThreshDisplay(val);
+    saveSettings();
+    notifyContent();
   });
 
   shortsSlider.addEventListener('input', () => {
-    updateSliderDisplays(); saveSettings(); notifyContent();
+    const val = parseInt(shortsSlider.value, 10);
+    updateShortsDisplay(val);
+    saveSettings();
+    notifyContent();
   });
 
-  function saveSettings() {
+  function saveSettings(cb) {
     chrome.storage.sync.set({
-      scrollThreshold: parseInt(threshSlider.value),
-      shortsThreshold: parseInt(shortsSlider.value),
+      scrollThreshold: parseInt(threshSlider.value, 10),
+      shortsThreshold: parseInt(shortsSlider.value, 10),
+      scrollMaxThreshold: parseInt(threshSlider.max, 10),
+      shortsMaxThreshold: parseInt(shortsSlider.max, 10),
+    }, () => {
+      if (cb) cb();
+    });
+  }
+
+  // ── Inline threshold inputs ────────────────────────────────────────────────
+  if (threshInput) {
+    threshInput.addEventListener('focus', () => {
+      threshInput.select();
+    });
+
+    threshInput.addEventListener('input', () => {
+      threshInput.style.width = Math.max(2, threshInput.value.length) + 'ch';
+    });
+
+    function commitThresh() {
+      let v = parseInt(threshInput.value.replace(/[^0-9]/g, ''), 10);
+      if (isNaN(v) || v < 100) v = 500;
+      if (v > parseInt(threshSlider.max, 10)) {
+        threshSlider.max = v;
+      }
+      threshSlider.value = v;
+      updateThreshDisplay(v);
+      saveSettings();
+      notifyContent();
+    }
+
+    threshInput.addEventListener('change', commitThresh);
+    threshInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') threshInput.blur();
+    });
+  }
+
+  if (shortsInput) {
+    shortsInput.addEventListener('focus', () => {
+      shortsInput.select();
+    });
+
+    shortsInput.addEventListener('input', () => {
+      shortsInput.style.width = Math.max(1, shortsInput.value.length) + 'ch';
+    });
+
+    function commitShorts() {
+      let v = parseInt(shortsInput.value.replace(/[^0-9]/g, ''), 10);
+      if (isNaN(v) || v < 1) v = 1;
+      if (v > parseInt(shortsSlider.max, 10)) {
+        shortsSlider.max = v;
+      }
+      shortsSlider.value = v;
+      updateShortsDisplay(v);
+      saveSettings();
+      notifyContent();
+    }
+
+    shortsInput.addEventListener('change', commitShorts);
+    shortsInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') shortsInput.blur();
     });
   }
 
@@ -219,8 +303,16 @@
   });
 
   function notifyContent() {
+    const payload = {
+      type: 'SETTINGS_UPDATED',
+      settings: {
+        scrollThreshold: parseInt(threshSlider.value, 10),
+        shortsThreshold: parseInt(shortsSlider.value, 10),
+        enabled: enableToggle.checked,
+      }
+    };
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      if (tabs[0]) chrome.tabs.sendMessage(tabs[0].id, { type: 'SETTINGS_UPDATED' }).catch(() => { });
+      if (tabs[0]) chrome.tabs.sendMessage(tabs[0].id, payload).catch(() => { });
     });
   }
 
@@ -254,11 +346,12 @@
   // ── Live stats polling ──────────────────────────────────────────────────────
   function updateStatDisplay(px, shorts, pxThreshold, shortsThreshold) {
     if (statPx) {
-      const val = px >= 1000 ? (px / 1000).toFixed(1) + 'k' : String(px);
+      const rounded = Math.round(px || 0);
+      const val = rounded === 0 ? '0' : (rounded / 1000).toFixed(1) + 'k';
       statPx.innerHTML = val + '<span>' + msg('unitPx') + '</span>';
     }
     if (statShorts) {
-      statShorts.innerHTML = shorts + '<span>' + msg('unitVideos') + '</span>';
+      statShorts.innerHTML = (shorts || 0) + '<span>' + msg('unitVideos') + '</span>';
     }
 
     // Bar: colour shifts safe → warn → danger based on % of threshold

@@ -265,10 +265,50 @@
       letter-spacing: 0.05em;
     }
 
-    .slider-val {
+    .slider-val-wrap {
+      display: inline-flex;
+      align-items: baseline;
+      cursor: text;
+    }
+
+    .slider-val-input {
       font-size: 10px;
       color: var(--red);
       font-weight: 500;
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed rgba(255, 45, 45, 0.35);
+      outline: none;
+      text-align: right;
+      padding: 0 1px;
+      margin: 0;
+      font-family: inherit;
+      -moz-appearance: textfield;
+      box-sizing: content-box;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .slider-val-input::-webkit-inner-spin-button,
+    .slider-val-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .slider-val-input:hover {
+      border-bottom-color: var(--red);
+    }
+
+    .slider-val-input:focus {
+      border-bottom: 1px solid var(--red);
+      background: rgba(255, 45, 45, 0.1);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .slider-val-unit {
+      font-size: 10px;
+      color: var(--red);
+      font-weight: 500;
+      white-space: pre;
     }
 
     input[type=range] {
@@ -817,7 +857,7 @@
     <div class="slider-row">
       <div class="slider-top">
         <span class="slider-name" data-i18n="scrollTrigger">Scroll distance trigger</span>
-        <span class="slider-val" id="threshVal">10,000 px</span>
+        <span class="slider-val-wrap"><input type="text" inputmode="numeric" id="threshInput" class="slider-val-input" value="10,000" /><span class="slider-val-unit"> px</span></span>
       </div>
       <input type="range" id="threshSlider" min="500" max="20000" step="500" value="10000" />
       <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;" data-i18n="scrollDesc">Reddit, Instagram feed, Facebook, LinkedIn…</div>
@@ -826,7 +866,7 @@
     <div class="slider-row" style="margin-top:14px;">
       <div class="slider-top">
         <span class="slider-name" data-i18n="shortsTrigger">YouTube Shorts trigger</span>
-        <span class="slider-val" id="shortsVal">5 shorts</span>
+        <span class="slider-val-wrap"><input type="text" inputmode="numeric" id="shortsInput" class="slider-val-input" value="5" /><span class="slider-val-unit"> videos</span></span>
       </div>
       <input type="range" id="shortsSlider" min="1" max="30" step="1" value="5" />
       <div style="font-size:9px;color:var(--muted);margin-top:4px;letter-spacing:0.05em;" data-i18n="shortsDesc">YouTube Shorts, TikTok, Instagram Reels, X Videos — each swipe = 1</div>
